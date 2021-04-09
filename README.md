@@ -9,6 +9,9 @@ Deep Learning Final Competition Team DL09
 
 ## model
 
+### lightly
+ - https://github.com/lightly-ai/lightly
+
 ### resnet
 
 ### swav

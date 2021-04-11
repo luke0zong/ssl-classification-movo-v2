@@ -141,8 +141,11 @@ def test():
     """
     Simple test for resnet50 class.
     """
-    net = Resnet50().cuda()
+    print("Buiding network")
+    net = Resnet50()
+    net.cuda()
     x = torch.randn([64, 3, 96, 96]).cuda()
+    print("Running random input")
     y = net(x)
     print("resnet50 simple test succeed!")
 

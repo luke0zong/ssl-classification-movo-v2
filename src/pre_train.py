@@ -31,7 +31,7 @@ from dataloader import CustomDataset
 #     if name.islower() and not name.startswith("__")
 #     and callable(models.__dict__[name]))
 
-parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
+parser = argparse.ArgumentParser(description='dl09 pretrain moco resnet50')
 parser.add_argument('data', metavar='DIR',
                     help='path to dataset')
 # parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet50',

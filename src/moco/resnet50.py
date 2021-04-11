@@ -60,7 +60,7 @@ class BasicBlock(nn.Module):
                                             stride=stride,
                                             padding=0,
                                             bias=False), 
-                                        nn.BatchNorm2d(out_channels))
+                                        nn.BatchNorm2d(out_channels[2]))
 
     def forward(self, x):
         out = F.relu(self.bn1(self.conv1(x)))

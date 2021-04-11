@@ -30,7 +30,7 @@ singularity exec --nv \
 source /ext3/env.sh
 conda activate dev
 python pre_train.py --checkpoint_dir $HOME/dl09/checkpoints \
-                        --epochs 20 \
+                        --epochs 100 \
                         --gpu 0 \
                         --mlp --aug-plus --cos \
                         /dataset

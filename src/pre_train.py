@@ -23,7 +23,7 @@ import torchvision.datasets as datasets
 
 ############# Use own code ###############
 # import moco.loader
-import model.moco_builder
+from model.moco_builder import MoCo
 from model.resnet50 import Resnet50
 from dataloader import CustomDataset
 
@@ -162,7 +162,7 @@ def main_worker(gpu, ngpus_per_node, args):
                                 world_size=args.world_size, rank=args.rank)
     # create model
     print("=> creating model '{}'".format("Resnet50"))
-    model = model.moco_builder.MoCo(
+    model = MoCo(
         Resnet50,
         args.moco_dim, args.moco_k, args.moco_m, args.moco_t, args.mlp)
     print(model)

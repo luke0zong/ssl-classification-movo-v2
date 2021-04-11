@@ -48,7 +48,7 @@ parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
 parser.add_argument('--save_checkpoint_per_epoch', default=2, type=int, metavar='N',
                     help='save checkpoint on how many opechs (default: 2)')
-parser.add_argument('--checkpoint_dir', default='./checkpoints', type=str, metavar='DIR',
+parser.add_argument('--checkpoint_dir', default='../checkpoints', type=str, metavar='DIR',
                     help='dir to save checkpoints')
 parser.add_argument('-b', '--batch-size', default=128, type=int,
                     metavar='N',

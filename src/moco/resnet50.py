@@ -30,7 +30,7 @@ class BasicBlock(nn.Module):
                                 stride=stride,
                                 bias=False)
 
-        self.bn1 = nn.BatchNorm2d(out_channels[0]))
+        self.bn1 = nn.BatchNorm2d(out_channels[0])
 
         self.conv2 = nn.Conv2d(out_channels[0], out_channels[1],
                                 kernel_size=kernel_sizes[1],

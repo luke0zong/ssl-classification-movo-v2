@@ -1,0 +1,12 @@
++ mkdir /tmp/yz7413
++ export SINGULARITY_CACHEDIR=/tmp/yz7413
++ SINGULARITY_CACHEDIR=/tmp/yz7413
++ cp -rp /scratch/DL21SP/student_dataset.sqsh /tmp
++ echo 'Dataset is copied to /tmp'
++ cd /home/yz7413/test
++ singularity exec --nv --bind /scratch --overlay /scratch/DL21SP/conda.sqsh:ro --overlay /tmp/student_dataset.sqsh:ro /share/apps/images/cuda11.1-cudnn8-devel-ubuntu18.04.sif /bin/bash -c '
+source /ext3/env.sh
+conda activate dev
+python demo.py --checkpoint-dir /scratch/yz7413/checkpoints/demo
+python eval.py --checkpoint-path /scratch/yz7413/checkpoints/demo/net_demo.pth
+'

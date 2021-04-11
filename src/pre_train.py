@@ -42,17 +42,17 @@ parser.add_argument('data', metavar='DIR',
 #                         ' (default: resnet50)')
 parser.add_argument('-j', '--workers', default=2, type=int, metavar='N',
                     help='number of data loading workers (default: 2)')
-parser.add_argument('--epochs', default=200, type=int, metavar='N',
+parser.add_argument('--epochs', default=100, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
-parser.add_argument('--save_checkpoint_per_epoch', default=20, type=int, metavar='N',
-                    help='save checkpoint on how many opechs (default: 20)')
+parser.add_argument('--save_checkpoint_per_epoch', default=2, type=int, metavar='N',
+                    help='save checkpoint on how many opechs (default: 2)')
 parser.add_argument('--checkpoint_dir', default='./checkpoints', type=str, metavar='DIR',
                     help='dir to save checkpoints')
-parser.add_argument('-b', '--batch-size', default=64, type=int,
+parser.add_argument('-b', '--batch-size', default=128, type=int,
                     metavar='N',
-                    help='mini-batch size (default: 64), this is the total '
+                    help='mini-batch size (default: 128), this is the total '
                          'batch size of all GPUs on the current node when '
                          'using Data Parallel or Distributed Data Parallel')
 parser.add_argument('--lr', '--learning-rate', default=0.03, type=float,
@@ -277,7 +277,7 @@ def main_worker(gpu, ngpus_per_node, args):
             if epoch % args.save_checkpoint_per_epoch == 0:
                 save_checkpoint({
                     'epoch': epoch + 1,
-                    'arch': args.arch,
+                    'arch': 'Resnet50',
                     'state_dict': model.state_dict(),
                     'optimizer' : optimizer.state_dict(),
                 }, is_best=False, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:04d}.pth.tar'.format(epoch)))

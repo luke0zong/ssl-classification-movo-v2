@@ -132,6 +132,7 @@ class Resnet50(nn.Module):
         out = self.conv5_3(out)
         
         out = torch.flatten(out, 1)
+        print(out.shape)
         out = self.fc(out)
 
         return F.log_softmax(out, dim=1)

@@ -1,7 +1,7 @@
 # Author: Arthur Jinyue Guo (jg5505).
 import torch
-from pytorch import nn
-import pytorch.nn.functional as F
+from torch import nn
+import torch.nn.functional as F
 
 class BasicBlock(nn.Module):
     """

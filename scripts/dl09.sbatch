@@ -30,5 +30,5 @@ singularity exec --nv \
 source /ext3/env.sh
 conda activate dev
 python train.py --checkpoint-dir $SCRATCH/checkpoints/dl09
-python eval.py --checkpoint-path $SCRATCH/checkpoints/dl09/net_demo.pth
+python eval.py --checkpoint-path $SCRATCH/checkpoints/dl09/net_dl09.pth
 "

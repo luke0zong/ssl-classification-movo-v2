@@ -51,8 +51,6 @@ class MoCo(nn.Module):
 
     @torch.no_grad()
     def _dequeue_and_enqueue(self, keys):
-        # gather keys before updating queue
-        keys = concat_all_gather(keys)
 
         batch_size = keys.shape[0]
 
@@ -73,7 +71,7 @@ class MoCo(nn.Module):
         """
         # gather from all gpus
         batch_size_this = x.shape[0]
-        x_gather = concat_all_gather(x)
+        x_gather = x
         batch_size_all = x_gather.shape[0]
 
         num_gpus = batch_size_all // batch_size_this
@@ -101,7 +99,7 @@ class MoCo(nn.Module):
         """
         # gather from all gpus
         batch_size_this = x.shape[0]
-        x_gather = concat_all_gather(x)
+        x_gather = x
         batch_size_all = x_gather.shape[0]
 
         num_gpus = batch_size_all // batch_size_this

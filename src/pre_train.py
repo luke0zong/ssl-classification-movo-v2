@@ -23,6 +23,7 @@ import torchvision.datasets as datasets
 
 ############# Use own code ###############
 # import moco.loader
+from model.moco_loader import GaussianBlur, TwoCropsTransform
 from model.moco_builder import MoCo
 from model.resnet50 import Resnet50
 from dataloader import CustomDataset
@@ -234,7 +235,7 @@ def main_worker(gpu, ngpus_per_node, args):
                 transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)  # not strengthened
             ], p=0.8),
             transforms.RandomGrayscale(p=0.2),
-            transforms.RandomApply([moco.loader.GaussianBlur([.1, 2.])], p=0.5),
+            transforms.RandomApply([GaussianBlur([.1, 2.])], p=0.5),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             normalize
@@ -251,7 +252,7 @@ def main_worker(gpu, ngpus_per_node, args):
         ]
 
     train_dataset = CustomDataset(traindir, "unlabeled",
-                                  moco.loader.TwoCropsTransform(transforms.Compose(augmentation)))
+                                  TwoCropsTransform(transforms.Compose(augmentation)))
 
     if args.distributed:
         train_sampler = torch.utils.data.distributed.DistributedSampler(train_dataset)

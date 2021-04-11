@@ -50,9 +50,9 @@ parser.add_argument('--save_checkpoint_per_epoch', default=20, type=int, metavar
                     help='save checkpoint on how many opechs (default: 20)')
 parser.add_argument('--checkpoint_dir', default='./checkpoints', type=str, metavar='DIR',
                     help='dir to save checkpoints')
-parser.add_argument('-b', '--batch-size', default=128, type=int,
+parser.add_argument('-b', '--batch-size', default=64, type=int,
                     metavar='N',
-                    help='mini-batch size (default: 128), this is the total '
+                    help='mini-batch size (default: 64), this is the total '
                          'batch size of all GPUs on the current node when '
                          'using Data Parallel or Distributed Data Parallel')
 parser.add_argument('--lr', '--learning-rate', default=0.03, type=float,

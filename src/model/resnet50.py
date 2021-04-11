@@ -109,6 +109,7 @@ class Resnet50(nn.Module):
 
     
     def forward(self, x):
+        print(x.shape)
         out = F.relu(self.bn1(self.conv1(x)))
 
         out = self.conv2_1(out)

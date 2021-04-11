@@ -29,7 +29,7 @@ singularity exec --nv \
 /bin/bash -c "
 source /ext3/env.sh
 conda activate dev
-python src/pre_train.py --checkpoint_dir $SCRATCH/checkpoints/dl09 \
+python pre_train.py --checkpoint_dir $SCRATCH/checkpoints/dl09 \
                         --epochs 20 \
                         --gpu 0 \
                         --mlp --aug-plus --cos \

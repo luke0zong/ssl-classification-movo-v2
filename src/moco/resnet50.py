@@ -28,7 +28,7 @@ class BasicBlock(nn.Module):
                                 kernel_size=kernel_sizes[0],
                                 padding=(kernel_sizes[0]-1)/2,
                                 stride=stride,
-                                bias=False))
+                                bias=False)
 
         self.bn1 = nn.BatchNorm2d(out_channels[0]))
 
@@ -36,7 +36,7 @@ class BasicBlock(nn.Module):
                                 kernel_size=kernel_sizes[1],
                                 padding=(kernel_sizes[1]-1)/2,
                                 stride=1,
-                                bias=False))
+                                bias=False)
 
         self.bn2 = nn.BatchNorm2d(out_channels[1]))
 
@@ -44,7 +44,7 @@ class BasicBlock(nn.Module):
                                 kernel_size=kernel_sizes[2],
                                 padding=(kernel_sizes[2]-1)/2,
                                 stride=1,
-                                bias=False))
+                                bias=False)
 
         self.bn3 = nn.BatchNorm2d(out_channels[2]))
 

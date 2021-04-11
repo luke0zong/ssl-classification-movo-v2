@@ -26,7 +26,7 @@ class BasicBlock(nn.Module):
 
         self.conv1 = nn.Conv2d(in_channel, out_channels[0],
                                 kernel_size=kernel_sizes[0],
-                                padding=(kernel_sizes[0]-1)/2,
+                                padding=(kernel_sizes[0]-1)//2,
                                 stride=stride,
                                 bias=False)
 
@@ -34,7 +34,7 @@ class BasicBlock(nn.Module):
 
         self.conv2 = nn.Conv2d(out_channels[0], out_channels[1],
                                 kernel_size=kernel_sizes[1],
-                                padding=(kernel_sizes[1]-1)/2,
+                                padding=(kernel_sizes[1]-1)//2,
                                 stride=1,
                                 bias=False)
 
@@ -42,7 +42,7 @@ class BasicBlock(nn.Module):
 
         self.conv3 = nn.Conv2d(out_channels[1], out_channels[2],
                                 kernel_size=kernel_sizes[2],
-                                padding=(kernel_sizes[2]-1)/2,
+                                padding=(kernel_sizes[2]-1)//2,
                                 stride=1,
                                 bias=False)
 

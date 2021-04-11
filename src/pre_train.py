@@ -40,8 +40,8 @@ parser.add_argument('data', metavar='DIR',
 #                     help='model architecture: ' +
 #                         ' | '.join(model_names) +
 #                         ' (default: resnet50)')
-parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
-                    help='number of data loading workers (default: 4)')
+parser.add_argument('-j', '--workers', default=2, type=int, metavar='N',
+                    help='number of data loading workers (default: 2)')
 parser.add_argument('--epochs', default=200, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
@@ -50,9 +50,9 @@ parser.add_argument('--save_checkpoint_per_epoch', default=20, type=int, metavar
                     help='save checkpoint on how many opechs (default: 20)')
 parser.add_argument('--checkpoint_dir', default='./checkpoints', type=str, metavar='DIR',
                     help='dir to save checkpoints')
-parser.add_argument('-b', '--batch-size', default=256, type=int,
+parser.add_argument('-b', '--batch-size', default=128, type=int,
                     metavar='N',
-                    help='mini-batch size (default: 256), this is the total '
+                    help='mini-batch size (default: 128), this is the total '
                          'batch size of all GPUs on the current node when '
                          'using Data Parallel or Distributed Data Parallel')
 parser.add_argument('--lr', '--learning-rate', default=0.03, type=float,

@@ -33,7 +33,7 @@ from dataloader import CustomDataset
 
 parser = argparse.ArgumentParser(description='dl09 pretrain moco resnet50')
 parser.add_argument('data', metavar='DIR',
-                    help='path to dataset')
+                    help='dir to dataset')
 # parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet50',
 #                     choices=model_names,
 #                     help='model architecture: ' +
@@ -47,8 +47,8 @@ parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
 parser.add_argument('--save_checkpoint_per_epoch', default=20, type=int, metavar='N',
                     help='save checkpoint on how many opechs (default: 20)')
-parser.add_argument('checkpoint_dir', default='./checkpoints', type=str, metavar='PATH',
-                    help='path to save checkpoints')
+parser.add_argument('--checkpoint_dir', default='./checkpoints', type=str, metavar='DIR',
+                    help='dir to save checkpoints')
 parser.add_argument('-b', '--batch-size', default=256, type=int,
                     metavar='N',
                     help='mini-batch size (default: 256), this is the total '

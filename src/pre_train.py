@@ -40,8 +40,8 @@ parser.add_argument('data', metavar='DIR',
 #                     help='model architecture: ' +
 #                         ' | '.join(model_names) +
 #                         ' (default: resnet50)')
-parser.add_argument('-j', '--workers', default=32, type=int, metavar='N',
-                    help='number of data loading workers (default: 32)')
+parser.add_argument('-j', '--workers', default=8, type=int, metavar='N',
+                    help='number of data loading workers (default: 8)')
 parser.add_argument('--epochs', default=200, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
@@ -263,6 +263,7 @@ def main_worker(gpu, ngpus_per_node, args):
         train_dataset, batch_size=args.batch_size, shuffle=(train_sampler is None),
         num_workers=args.workers, pin_memory=True, sampler=train_sampler, drop_last=True)
 
+    print("=> Start Training.")
     for epoch in range(args.start_epoch, args.epochs):
         if args.distributed:
             train_sampler.set_epoch(epoch)

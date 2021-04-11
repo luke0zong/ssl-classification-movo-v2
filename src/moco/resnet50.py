@@ -76,7 +76,7 @@ class Resnet50(nn.Module):
     A resnet50 model with input shape of 3 x 96 x 96.
     """
 
-    def __init__(self, block, num_blocks, num_classes=800):
+    def __init__(self, num_classes=800):
         super(Resnet50, self).__init__()
 
         # in shape: (N, 3, 96, 96)
@@ -135,3 +135,17 @@ class Resnet50(nn.Module):
         out = self.fc(out)
 
         return F.log_softmax(out, dim=1)
+
+
+def test():
+    """
+    Simple test for resnet50 class.
+    """
+    net = Resnet50()
+    x = torch.randn([64, 3, 96, 96])
+    y = net(x)
+    print("resnet50 simple test succeed!")
+
+
+if __name__ == '__main__':
+    test()

@@ -38,7 +38,7 @@ class BasicBlock(nn.Module):
                                 stride=1,
                                 bias=False)
 
-        self.bn2 = nn.BatchNorm2d(out_channels[1]))
+        self.bn2 = nn.BatchNorm2d(out_channels[1])
 
         self.conv3 = nn.Conv2d(out_channels[1], out_channels[2],
                                 kernel_size=kernel_sizes[2],
@@ -46,7 +46,7 @@ class BasicBlock(nn.Module):
                                 stride=1,
                                 bias=False)
 
-        self.bn3 = nn.BatchNorm2d(out_channels[2]))
+        self.bn3 = nn.BatchNorm2d(out_channels[2])
 
         # if stride==1, use identity residual
         self.shortcut = nn.Sequential()

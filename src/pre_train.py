@@ -47,7 +47,7 @@ parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
 parser.add_argument('--save_checkpoint_per_epoch', default=20, type=int, metavar='N',
                     help='save checkpoint on how many opechs (default: 20)')
-parser.add_argument('checkpoint_path', default='./checkpoints', type=str, metavar='PATH',
+parser.add_argument('checkpoint_dir', default='./checkpoints', type=str, metavar='PATH',
                     help='path to save checkpoints')
 parser.add_argument('-b', '--batch-size', default=256, type=int,
                     metavar='N',
@@ -278,7 +278,7 @@ def main_worker(gpu, ngpus_per_node, args):
                     'arch': args.arch,
                     'state_dict': model.state_dict(),
                     'optimizer' : optimizer.state_dict(),
-                }, is_best=False, filename=os.path.join(args.checkpoint_path, 'checkpoint_{:04d}.pth.tar'.format(epoch)))
+                }, is_best=False, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:04d}.pth.tar'.format(epoch)))
 
 
 def train(train_loader, model, criterion, optimizer, epoch, args):

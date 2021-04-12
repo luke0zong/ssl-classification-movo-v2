@@ -33,7 +33,7 @@ python pre_train.py --checkpoint_dir $HOME/dl09/checkpoints \
                         --epochs 100 \
                         --gpu 0 \
                         --resume $HOME/dl09/checkpoints/checkpoint_0015.pth.tar \
-                        --start_epoch 15 \
+                        --start-epoch 15 \
                         --mlp --aug-plus --cos \
                         /dataset
 "

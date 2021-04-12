@@ -87,8 +87,8 @@ parser.add_argument('--multiprocessing-distributed', action='store_true',
                          'multi node data parallel training')
 
 # moco specific configs:
-parser.add_argument('--moco-dim', default=128, type=int,
-                    help='feature dimension (default: 128)')
+parser.add_argument('--moco-dim', default=800, type=int,
+                    help='feature dimension (default: 800)')
 parser.add_argument('--moco-k', default=65536, type=int,
                     help='queue size; number of negative keys (default: 65536)')
 parser.add_argument('--moco-m', default=0.999, type=float,

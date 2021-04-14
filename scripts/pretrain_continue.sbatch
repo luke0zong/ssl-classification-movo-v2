@@ -8,6 +8,7 @@
 #SBATCH --error=dl09_%j.err
 #SBATCH --exclusive
 #SBATCH --requeue
+#SBATCH --job-name=dl09_pre_cont
 
 /share/apps/local/bin/p2pBandwidthLatencyTest > /dev/null 2>&1
 
@@ -21,6 +22,9 @@ echo "Dataset is copied to /tmp"
 
 cd $HOME/dl09/src
 
+echo "Output log in $SCRATCH/log/${SLURM_JOB_ID}.log"
+tail -F $HOME/dl09/scripts/dl09_${SLURM_JOB_ID}.out >> $SCRATCH/log/${SLURM_JOB_ID}.log &
+
 singularity exec --nv \
 --bind /scratch \
 --overlay /scratch/DL21SP/conda.sqsh:ro \
@@ -29,11 +33,11 @@ singularity exec --nv \
 /bin/bash -c "
 source /ext3/env.sh
 conda activate dev
-python pre_train.py --checkpoint_dir $HOME/dl09/checkpoints \
+python pre_train.py --checkpoint_dir $SCRATCH/dl09/pre_checkpoints \
                         --epochs 100 \
                         --gpu 0 \
-                        --resume $HOME/dl09/checkpoints/checkpoint_0015.pth.tar \
-                        --start-epoch 15 \
+                        --resume $SCRATCH/dl09/pre_checkpoints/checkpoint_0005.pth.tar \
+                        --start-epoch 6 \
                         --mlp --aug-plus --cos \
                         /dataset
 "

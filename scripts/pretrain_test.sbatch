@@ -8,6 +8,9 @@
 #SBATCH --error=dl09_%j.err
 #SBATCH --exclusive
 #SBATCH --requeue
+#SBATCH --job-name=dl09_pre
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=%u@nyu.edu
 
 /share/apps/local/bin/p2pBandwidthLatencyTest > /dev/null 2>&1
 
@@ -20,6 +23,9 @@ cp -rp /scratch/DL21SP/student_dataset.sqsh /tmp
 echo "Dataset is copied to /tmp"
 
 cd $HOME/dl09/src
+
+echo "Output log in ${SCRATC}/log/"
+tail -F $HOME/dl09/scripts/${SLURM_JOB_ID}.out >> $SCRATCH/log/${SLURM_JOB_ID}.log &
 
 singularity exec --nv \
 --bind /scratch \

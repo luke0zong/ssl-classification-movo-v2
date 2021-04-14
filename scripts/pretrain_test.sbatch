@@ -25,7 +25,7 @@ echo "Dataset is copied to /tmp"
 cd $HOME/dl09/src
 
 echo "Output log in ${SCRATC}/log/"
-tail -F $HOME/dl09/scripts/${SLURM_JOB_ID}.out >> $SCRATCH/log/${SLURM_JOB_ID}.log &
+tail -F $HOME/dl09/scripts/dl09_${SLURM_JOB_ID}.out >> $SCRATCH/log/${SLURM_JOB_ID}.log &
 
 singularity exec --nv \
 --bind /scratch \

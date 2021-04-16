@@ -82,10 +82,10 @@ def main():
         warnings.warn('You have chosen a specific GPU. This will completely '
                       'disable data parallelism.')
 
-    main_worker(args.gpu, ngpus_per_node, args)
+    main_worker(args.gpu, args)
 
 
-def main_worker(gpu, ngpus_per_node, args):
+def main_worker(gpu, args):
     global best_acc1
     args.gpu = gpu
 
@@ -204,14 +204,13 @@ def main_worker(gpu, ngpus_per_node, args):
         if epoch == 0 or (epoch + 1) % args.eval_per_n_epoch == 0:
             accuracy = evaluate(eval_loader, model, args)
             print(f"=> Epoch: {epoch+1}, accuracy: {accuracy:.6f}")
-
-        save_checkpoint({
-            'epoch': epoch + 1,
-            'arch': args.arch,
-            'accuracy': accuracy,
-            'state_dict': model.state_dict(),
-            'optimizer': optimizer.state_dict(),
-        }, False, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:04d}.pth.tar'.format(epoch)))
+            save_checkpoint({
+                'epoch': epoch + 1,
+                'arch': args.arch,
+                'accuracy': accuracy,
+                'state_dict': model.state_dict(),
+                'optimizer': optimizer.state_dict(),
+            }, False, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:04d}.pth.tar'.format(epoch)))
 
         if epoch == args.start_epoch:
             sanity_check(model.state_dict(), args.pretrained)

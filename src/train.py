@@ -277,21 +277,18 @@ def evaluate(eval_loader, model, args):
     correct = 0
     total = 0
     with torch.no_grad():
-    for i, (images, labels) in enumerate(val_loader):
-        images = images.cuda(args.gpu, non_blocking=True)
-        labels = labels.cuda(args.gpu, non_blocking=True)
+        for i, (images, labels) in enumerate(val_loader):
+            images = images.cuda(args.gpu, non_blocking=True)
+            labels = labels.cuda(args.gpu, non_blocking=True)
 
-        output = model(images)
-        _, pred = output.topk(k=1, dim=1)
-        correct_in_batch = pred.eq(labels.view(1, -1).expand_as(pred))
+            output = model(images)
+            _, pred = output.topk(k=1, dim=1)
+            correct_in_batch = pred.eq(labels.view(1, -1).expand_as(pred))
 
-        correct += correct_in_batch
-        total += images.shape[0]
+            correct += correct_in_batch
+            total += images.shape[0]
 
     return correct / total
-
-
-    return accuracy
 
 
 def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):

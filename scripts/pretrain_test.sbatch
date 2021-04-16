@@ -39,5 +39,6 @@ python pre_train.py --checkpoint_dir $SCRATCH/dl09/pre_checkpoints \
                         --epochs 10 \
                         --gpu 0 \
                         --mlp --aug-plus --cos \
+                        --save-checkpoint-per-epoch 1 \
                         /dataset
 "

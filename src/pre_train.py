@@ -46,7 +46,7 @@ parser.add_argument('--epochs', default=100, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
-parser.add_argument('--save_checkpoint_per_epoch', default=5, type=int, metavar='N',
+parser.add_argument('--save-checkpoint-per-epoch', default=5, type=int, metavar='N',
                     help='save checkpoint on how many opechs (default: 5)')
 parser.add_argument('--checkpoint_dir', default='../checkpoints', type=str, metavar='DIR',
                     help='dir to save checkpoints')
@@ -274,7 +274,7 @@ def main_worker(gpu, ngpus_per_node, args):
 
         if not args.multiprocessing_distributed or (args.multiprocessing_distributed
                 and args.rank % ngpus_per_node == 0):
-            if epoch % args.save_checkpoint_per_epoch == 0:
+            if epoch==0 or (epoch+1) % args.save_checkpoint_per_epoch == 0:
                 save_checkpoint({
                     'epoch': epoch + 1,
                     'arch': 'Resnet50',

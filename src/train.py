@@ -205,7 +205,7 @@ def main_worker(gpu, args):
 
         if epoch == 0 or (epoch + 1) % args.eval_per_n_epoch == 0:
             accuracy = evaluate(eval_loader, model, args)
-            print(f"=> Epoch: {epoch+1}, accuracy: {accuracy:.6f}")
+            print(f"=> Epoch: {epoch+1}, accuracy: {accuracy:.4f}")
             save_checkpoint({
                 'epoch': epoch + 1,
                 'arch': args.arch,

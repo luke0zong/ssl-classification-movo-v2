@@ -122,7 +122,9 @@ def main_worker(gpu, args):
 
             args.start_epoch = 0
             msg = model.load_state_dict(state_dict, strict=False)
-            assert set(msg.missing_keys) == {"fc.weight", "fc.bias"}
+            print(f"=> loading state_dict: \n{list(state_dict.keys())}")
+            print(f"=> missing state keys: \n{msg.missing_keys}")
+            # assert set(msg.missing_keys) == {"fc.weight", "fc.bias"}
 
             print("=> loaded pre-trained model '{}'".format(args.pretrained))
         else:

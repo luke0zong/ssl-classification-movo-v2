@@ -277,7 +277,7 @@ def evaluate(eval_loader, model, args):
     correct = 0
     total = 0
     with torch.no_grad():
-        for i, (images, labels) in enumerate(val_loader):
+        for i, (images, labels) in enumerate(eval_loader):
             images = images.cuda(args.gpu, non_blocking=True)
             labels = labels.cuda(args.gpu, non_blocking=True)
 

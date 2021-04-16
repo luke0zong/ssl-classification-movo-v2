@@ -122,8 +122,8 @@ def main_worker(gpu, args):
 
             args.start_epoch = 0
             msg = model.load_state_dict(state_dict, strict=False)
-            print(f"=> loading state_dict: \n{list(state_dict.keys())}")
-            print(f"=> missing state keys: \n{msg.missing_keys}")
+            # print(f"=> loading state_dict: \n{list(state_dict.keys())}")
+            # print(f"=> missing state keys: \n{msg.missing_keys}")
             assert set(msg.missing_keys) == {"fc.weight", "fc.bias"}
 
             print("=> loaded pre-trained model '{}'".format(args.pretrained))
@@ -288,7 +288,7 @@ def evaluate(eval_loader, model, args):
             pred = pred.t()
             correct_in_batch = pred.eq(labels.view(1, -1).expand_as(pred))
 
-            correct += correct_in_batch.view(-1).float().sum(0, keepdim=true)item()
+            correct += correct_in_batch.view(-1).float().sum(0, keepdim=true).item()
             total += images.shape[0].item()
 
     return correct / total

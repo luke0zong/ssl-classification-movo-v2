@@ -315,8 +315,7 @@ def sanity_check(state_dict, pretrained_weights):
             continue
 
         # name in pretrained model
-        k_pre = 'module.encoder_q.' + k[len('module.'):] \
-            if k.startswith('module.') else 'module.encoder_q.' + k
+        k_pre = 'encoder_q.' + k
 
         assert ((state_dict[k].cpu() == state_dict_pre[k_pre]).all()), \
             '{} is changed in linear classifier training.'.format(k)

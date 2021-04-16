@@ -114,9 +114,9 @@ def main_worker(gpu, args):
             state_dict = checkpoint['state_dict']
             for k in list(state_dict.keys()):
                 # retain only encoder_q up to before the embedding layer
-                if k.startswith('module.encoder_q') and not k.startswith('module.encoder_q.fc'):
+                if k.startswith('encoder_q') and not k.startswith('encoder_q.fc'):
                     # remove prefix
-                    state_dict[k[len("module.encoder_q."):]] = state_dict[k]
+                    state_dict[k[len("encoder_q."):]] = state_dict[k]
                 # delete renamed or unused k
                 del state_dict[k]
 
@@ -124,7 +124,7 @@ def main_worker(gpu, args):
             msg = model.load_state_dict(state_dict, strict=False)
             print(f"=> loading state_dict: \n{list(state_dict.keys())}")
             print(f"=> missing state keys: \n{msg.missing_keys}")
-            # assert set(msg.missing_keys) == {"fc.weight", "fc.bias"}
+            assert set(msg.missing_keys) == {"fc.weight", "fc.bias"}
 
             print("=> loaded pre-trained model '{}'".format(args.pretrained))
         else:

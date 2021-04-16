@@ -1,4 +1,4 @@
-# Author: Arthur Jinyue Guo (jg5505).
+# Author: Arthur Jinyue Guo (jg5505)
 import torch
 from torch import nn
 import torch.nn.functional as F

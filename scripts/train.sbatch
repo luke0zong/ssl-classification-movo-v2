@@ -38,5 +38,6 @@ python train.py --checkpoint_dir $SCRATCH/dl09/checkpoints \
                 --gpu 0 \
                 --pretrained $SCRATCH/dl09/pre_checkpoints/checkpoint_0055.pth.tar \
                 --eval-per-n-epoch 5 \
+                --lr 100 \
                 /dataset
 "

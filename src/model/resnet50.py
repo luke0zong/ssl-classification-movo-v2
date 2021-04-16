@@ -106,6 +106,7 @@ class Resnet50(nn.Module):
         # flatten to (N, 2048*3*3)
         self.fc = nn.Linear(2048*3*3, num_classes)
         # logsoftargmax
+        # out shape: (N, num_classes)
 
     
     def forward(self, x):

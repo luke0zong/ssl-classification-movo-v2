@@ -291,7 +291,7 @@ def evaluate(eval_loader, model, args):
             correct += correct_in_batch.view(-1).float().sum(0, keepdim=True).item()
             total += images.shape[0]
 
-    return correct / total
+    return correct * 100 / total
 
 
 def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):

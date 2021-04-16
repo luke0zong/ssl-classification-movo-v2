@@ -289,7 +289,7 @@ def evaluate(eval_loader, model, args):
             correct_in_batch = pred.eq(labels.view(1, -1).expand_as(pred))
 
             correct += correct_in_batch.view(-1).float().sum(0, keepdim=True).item()
-            total += images.shape[0].item()
+            total += images.shape[0]
 
     return correct / total
 

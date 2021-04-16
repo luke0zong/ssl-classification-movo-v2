@@ -283,6 +283,7 @@ def evaluate(eval_loader, model, args):
 
             output = model(images)
             _, pred = output.topk(k=1, dim=1)
+            pred = pred.t()
             correct_in_batch = pred.eq(labels.view(1, -1).expand_as(pred))
 
             correct += correct_in_batch

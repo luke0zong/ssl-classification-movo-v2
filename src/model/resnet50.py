@@ -134,7 +134,8 @@ class Resnet50(nn.Module):
         out = torch.flatten(out, 1)
         out = self.fc(out)
 
-        return F.log_softmax(out, dim=1)
+        return out
+        # return F.log_softmax(out, dim=1)
 
 
 def test():

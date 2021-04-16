@@ -59,7 +59,8 @@ parser.add_argument('--pretrained', default='', type=str,
                     help='path to moco pretrained checkpoint')
 parser.add_argument('--eval-per-n-epoch', default=5, type=int,
                     help='evaluate the training result per n epoch (default: 5)')
-
+parser.add_argument('--checkpoint_dir', default='../checkpoints', type=str, metavar='DIR',
+                    help='dir to save checkpoints')
 
 best_acc1 = 0
 
@@ -210,7 +211,7 @@ def main_worker(gpu, ngpus_per_node, args):
             'accuracy': accuracy,
             'state_dict': model.state_dict(),
             'optimizer': optimizer.state_dict(),
-        }, False)
+        }, False, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:04d}.pth.tar'.format(epoch)))
 
         if epoch == args.start_epoch:
             sanity_check(model.state_dict(), args.pretrained)

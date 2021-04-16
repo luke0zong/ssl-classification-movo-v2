@@ -164,6 +164,7 @@ def main_worker(gpu, ngpus_per_node, args):
             optimizer.load_state_dict(checkpoint['optimizer'])
             print("=> loaded checkpoint '{}' (epoch {})"
                   .format(args.resume, checkpoint['epoch']))
+            del checkpoint
         else:
             print("=> no checkpoint found at '{}'".format(args.resume))
     

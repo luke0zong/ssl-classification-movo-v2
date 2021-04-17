@@ -9,16 +9,17 @@ import warnings
 
 import torch
 import torch.nn as nn
-import torch.nn.parallel
+# import torch.nn.parallel
 import torch.backends.cudnn as cudnn
 # import torch.distributed as dist
 import torch.optim
-import torch.multiprocessing as mp
+# import torch.multiprocessing as mp
 import torch.utils.data
 # import torch.utils.data.distributed
 import torchvision.transforms as transforms
 # import torchvision.datasets as datasets
 # import torchvision.models as models
+import torch.nn.functional as F
 
 from model.resnet50 import Resnet50
 from dataloader import CustomDataset
@@ -246,7 +247,7 @@ def train(train_loader, model, criterion, optimizer, epoch, args):
 
         # compute output
         output = model(images)
-        loss = criterion(output, target)
+        loss = criterion(F.log_softmax(output), target)
 
         # update loss record
         losses.update(loss.item(), images.size(0))

@@ -247,7 +247,7 @@ def train(train_loader, model, criterion, optimizer, epoch, args):
 
         # compute output
         output = model(images)
-        loss = criterion(F.log_softmax(output), target)
+        loss = criterion(output, target)
 
         # update loss record
         losses.update(loss.item(), images.size(0))

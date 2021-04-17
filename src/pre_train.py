@@ -280,7 +280,7 @@ def main_worker(gpu, ngpus_per_node, args):
                     'arch': 'Resnet50',
                     'state_dict': model.state_dict(),
                     'optimizer' : optimizer.state_dict(),
-                }, is_best=False, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:04d}.pth.tar'.format(epoch)))
+                }, is_best=False, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:04d}.pth.tar'.format(epoch+1)))
 
 
 def train(train_loader, model, criterion, optimizer, epoch, args):

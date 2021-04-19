@@ -166,7 +166,7 @@ def main_worker(gpu, ngpus_per_node, args):
     # create model
     print("=> creating model '{}'".format("Resnet50"))
     model = MoCo(
-        models.__dict__[args.arch]
+        models.__dict__[args.arch],
         # Resnet50,
         args.moco_dim, args.moco_k, args.moco_m, args.moco_t, args.mlp)
     print(model)

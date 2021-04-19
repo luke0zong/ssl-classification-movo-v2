@@ -143,7 +143,7 @@ def main_worker(gpu, ngpus_per_node, args):
     if args.gpu is not None:
         print("=> Use GPU: {} for training".format(args.gpu))
 
-    print("=> creating model '{}'".format(args.arch)))
+    print("=> creating model '{}'".format(args.arch))
     model = MoCo(
         models.__dict__[args.arch],
         args.moco_dim, args.moco_k, args.moco_m, args.moco_t, args.mlp)

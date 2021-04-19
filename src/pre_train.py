@@ -215,7 +215,7 @@ def main_worker(gpu, ngpus_per_node, args):
 
     if args.small_set:
         print('=> Using 1/10 unlabeled set')
-        train_sampler = torch.utils.data.RandomSample(train_dataset, replacement=True, num_samples=51200)
+        train_sampler = torch.utils.data.RandomSampler(train_dataset, replacement=True, num_samples=51200)
     else:
         print('=> Using full unlabeled set')
         train_sampler = None

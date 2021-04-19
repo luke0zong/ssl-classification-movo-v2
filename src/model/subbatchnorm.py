@@ -16,7 +16,7 @@ class SubBatchNorm2d(nn.BatchNorm2d):
         num_splits:
             Number of splits.
     """
-    def __init__(self, num_features, num_splits, **kw):
+    def __init__(self, num_features, num_splits=2, **kw):
         super().__init__(num_features, **kw)
         self.num_splits = num_splits
         self.register_buffer(

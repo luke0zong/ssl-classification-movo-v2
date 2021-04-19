@@ -9,20 +9,16 @@ import warnings
 
 import torch
 import torch.nn as nn
-# import torch.nn.parallel
 import torch.backends.cudnn as cudnn
-# import torch.distributed as dist
 import torch.optim
-# import torch.multiprocessing as mp
 import torch.utils.data
-# import torch.utils.data.distributed
 import torchvision.transforms as transforms
-# import torchvision.datasets as datasets
-# import torchvision.models as models
+import torchvision.models as models
 import torch.nn.functional as F
 
 from model.resnet50 import Resnet50
 from dataloader import CustomDataset
+from model.subbatchnorm import SubBatchNorm2d
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 parser.add_argument('data', metavar='DIR',
@@ -34,9 +30,9 @@ parser.add_argument('--epochs', default=100, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
-parser.add_argument('-b', '--batch-size', default=128, type=int,
+parser.add_argument('-b', '--batch-size', default=64, type=int,
                     metavar='N',
-                    help='mini-batch size (default: 128), this is the total '
+                    help='mini-batch size (default: 64), this is the total '
                          'batch size of all GPUs on the current node when '
                          'using Data Parallel or Distributed Data Parallel')
 parser.add_argument('--lr', '--learning-rate', default=30., type=float,
@@ -60,11 +56,10 @@ parser.add_argument('--pretrained', default='', type=str,
                     help='path to moco pretrained checkpoint')
 parser.add_argument('--eval-per-n-epoch', default=5, type=int,
                     help='evaluate the training result per n epoch (default: 5)')
-parser.add_argument('--checkpoint_dir', default='../checkpoints', type=str, metavar='DIR',
+parser.add_argument('--checkpoint-dir', default='../checkpoints', type=str, metavar='DIR',
                     help='dir to save checkpoints')
 
 best_acc1 = 0
-
 
 def main():
     args = parser.parse_args()
@@ -95,7 +90,7 @@ def main_worker(gpu, args):
 
     # create model
     print("=> creating model '{}'".format(args.arch))
-    model = Resnet50(800)
+    model = models.__dict__[args.arch](num_classes=800, norm_layer=SubBatchNorm2d)
 
     # freeze all layers but the last fc
     for name, param in model.named_parameters():
@@ -184,7 +179,8 @@ def main_worker(gpu, args):
             normalize])
     transform_eval = transforms.Compose([
             transforms.ToTensor(),
-            normalize])
+            # normalize
+            ])
 
     train_dataset = CustomDataset(traindir, "train", transform_train)
     eval_dataset = CustomDataset(traindir, "val", transform_eval)
@@ -285,12 +281,9 @@ def evaluate(eval_loader, model, args):
             labels = labels.cuda(args.gpu, non_blocking=True)
 
             output = model(images)
-            _, pred = output.topk(k=1, dim=1)
-            pred = pred.t()
-            correct_in_batch = pred.eq(labels.view(1, -1).expand_as(pred))
-
-            correct += correct_in_batch.view(-1).float().sum(0, keepdim=True).item()
-            total += images.shape[0]
+            _, predicted = torch.max(output.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
 
     return correct * 100 / total
 

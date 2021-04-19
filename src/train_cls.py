@@ -16,7 +16,7 @@ import torchvision.transforms as transforms
 import torchvision.models as models
 import torch.nn.functional as F
 
-from model.resnet50 import Resnet50
+# from model.resnet50 import Resnet50
 from dataloader import CustomDataset
 from model.subbatchnorm import SubBatchNorm2d
 

@@ -217,15 +217,14 @@ def main_worker(gpu, ngpus_per_node, args):
         print('=> Using 1/10 unlabeled set')
         train_sampler = torch.utils.data.RandomSampler(train_dataset, replacement=True, num_samples=51200)
         train_loader = torch.utils.data.DataLoader(
-            train_dataset, batch_size=args.batch_size, shuffle=True,
-            num_workers=args.workers, pin_memory=True, sampler=train_sampler, drop_last=False)
+            train_dataset, batch_size=args.batch_size, 
+            num_workers=args.workers, pin_memory=True, sampler=train_sampler)
 
     else:
         print('=> Using full unlabeled set')
-        train_sampler = None
         train_loader = torch.utils.data.DataLoader(
             train_dataset, batch_size=args.batch_size, shuffle=True,
-            num_workers=args.workers, pin_memory=True, sampler=train_sampler, drop_last=True)
+            num_workers=args.workers, pin_memory=True, drop_last=True)
 
     print("=> Start Training.")
     for epoch in range(args.start_epoch, args.epochs):

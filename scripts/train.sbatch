@@ -34,9 +34,9 @@ singularity exec --nv \
 source /ext3/env.sh
 conda activate dev
 python train.py --checkpoint_dir $SCRATCH/dl09/checkpoints \
-                --epochs 10 \
+                --epochs 100 \
                 --gpu 0 \
-                --pretrained $SCRATCH/dl09/pre_checkpoints/checkpoint_0009.pth.tar \
+                --pretrained $SCRATCH/dl09/pre_checkpoints/checkpoint_0035.pth.tar \
                 --eval-per-n-epoch 1 \
                 /dataset
 "

@@ -2,7 +2,7 @@
 # Modified by Arthur Jinyue Guo (jg5505)
 import torch
 import torch.nn as nn
-from sub_batch_norm import SubBatchNorm2d
+from model.subbatchnorm import SubBatchNorm2d
 
 
 class MoCo(nn.Module):

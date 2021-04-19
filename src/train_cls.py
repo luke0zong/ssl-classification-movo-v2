@@ -211,8 +211,8 @@ def main_worker(gpu, args):
                 'optimizer': optimizer.state_dict(),
             }, False, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:04d}.pth.tar'.format(epoch)))
 
-        if epoch == args.start_epoch:
-            sanity_check(model.state_dict(), args.pretrained)
+        # if epoch == args.start_epoch:
+        #     sanity_check(model.state_dict(), args.pretrained)
         
 
 def train(train_loader, model, criterion, optimizer, epoch, args):

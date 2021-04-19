@@ -37,6 +37,7 @@ source /ext3/env.sh
 conda activate dev
 python pre_train.py --checkpoint_dir $SCRATCH/dl09/pre_checkpoints \
                         --epochs 51 \
+                        --arch resnet18 \
                         --gpu 0 \
                         --mlp --aug-plus --cos \
                         --save-checkpoint-per-epoch 5 \

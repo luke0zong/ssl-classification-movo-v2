@@ -106,7 +106,7 @@ parser.add_argument('--cos', action='store_true',
 
 # test train option
 parser.add_argument('--small-set', action='store_true',
-                    help='use smaller training set (1/10')
+                    help='use smaller training set (1/10)')
 
 def main():
     args = parser.parse_args()
@@ -215,14 +215,17 @@ def main_worker(gpu, ngpus_per_node, args):
 
     if args.small_set:
         print('=> Using 1/10 unlabeled set')
-        train_sampler = torch.utils.data.RandomSampler(train_dataset, shuffle=False, replacement=True, num_samples=51200)
+        train_sampler = torch.utils.data.RandomSampler(train_dataset, replacement=True, num_samples=51200)
+        train_loader = torch.utils.data.DataLoader(
+            train_dataset, batch_size=args.batch_size, shuffle=True,
+            num_workers=args.workers, pin_memory=True, sampler=train_sampler, drop_last=False)
+
     else:
         print('=> Using full unlabeled set')
         train_sampler = None
-
-    train_loader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=args.batch_size, shuffle=True,
-        num_workers=args.workers, pin_memory=True, sampler=train_sampler, drop_last=True)
+        train_loader = torch.utils.data.DataLoader(
+            train_dataset, batch_size=args.batch_size, shuffle=True,
+            num_workers=args.workers, pin_memory=True, sampler=train_sampler, drop_last=True)
 
     print("=> Start Training.")
     for epoch in range(args.start_epoch, args.epochs):

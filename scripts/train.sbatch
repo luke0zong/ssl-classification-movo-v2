@@ -33,10 +33,12 @@ singularity exec --nv \
 /bin/bash -c "
 source /ext3/env.sh
 conda activate dev
-python train_cls.py --checkpoint-dir $SCRATCH/dl09/checkpoints \
-                --epochs 100 \
-                --gpu 0 \
-                --pretrained $SCRATCH/dl09/pre_checkpoints/checkpoint_0020.pth.tar \
-                --eval-per-n-epoch 1 \
-                /dataset
+python train_cls.py --checkpoint-dir $SCRATCH/dl09/checkpoints_small \
+                    --epochs 100 \
+                    --gpu 0 \
+                    --lr 30 \
+                    --pretrained $SCRATCH/dl09/pre_checkpoints_small/checkpoint_100.pth.tar \
+                    --eval-per-n-epoch 1 \
+                    --batch-size 64 \
+                    /dataset
 "

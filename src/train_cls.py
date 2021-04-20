@@ -44,7 +44,7 @@ parser.add_argument('--momentum', default=0.9, type=float, metavar='M',
 parser.add_argument('--wd', '--weight-decay', default=0., type=float,
                     metavar='W', help='weight decay (default: 0.)',
                     dest='weight_decay')
-parser.add_argument('-p', '--print-freq', default=10, type=int,
+parser.add_argument('-p', '--print-freq', default=100, type=int,
                     metavar='N', help='print frequency (default: 10)')
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
@@ -90,15 +90,16 @@ def main_worker(gpu, args):
 
     # create model
     print("=> creating model '{}'".format(args.arch))
-    model = models.__dict__[args.arch](num_classes=800, norm_layer=SubBatchNorm2d)
+    # model = models.__dict__[args.arch](num_classes=800, norm_layer=SubBatchNorm2d)
+    model = models.__dict__[args.arch](num_classes=800)
 
     # # freeze all layers but the last fc
-    # for name, param in model.named_parameters():
-    #     if name not in ['fc.weight', 'fc.bias']:
-    #         param.requires_grad = False
+    for name, param in model.named_parameters():
+        if name not in ['fc.weight', 'fc.bias']:
+            param.requires_grad = False
     # init the fc layer
-    model.fc.weight.data.normal_(mean=0.0, std=1.0)
-    model.fc.bias.data.zero_()
+    # model.fc.weight.data.normal_(mean=0.0, std=1.0)
+    # model.fc.bias.data.zero_()
 
     # load from pre-trained, before DistributedDataParallel constructor
     if args.pretrained:
@@ -139,12 +140,12 @@ def main_worker(gpu, args):
     # optimize only the linear classifier
     parameters = list(filter(lambda p: p.requires_grad, model.parameters()))
     assert len(parameters) == 2  # fc.weight, fc.bias
-    # optimizer = torch.optim.SGD(parameters, args.lr,
-    #                             momentum=args.momentum,
-    #                             weight_decay=args.weight_decay)
-    optimizer = torch.optim.Adam(parameters, args.lr,
-                                 betas=(0.9, 0.999), eps=1e-08,
-                                 weight_decay=args.weight_decay)
+    optimizer = torch.optim.SGD(parameters, args.lr,
+                                momentum=args.momentum,
+                                weight_decay=args.weight_decay)
+    # optimizer = torch.optim.Adam(parameters, args.lr,
+    #                              betas=(0.9, 0.999), eps=1e-08,
+    #                              weight_decay=args.weight_decay)
 
     # optionally resume from a checkpoint
     if args.resume:
@@ -176,16 +177,16 @@ def main_worker(gpu, args):
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                      std=[0.229, 0.224, 0.225])
     transform_train = transforms.Compose([
-            transforms.RandomHorizontalFlip(),
+            # transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             normalize])
     transform_eval = transforms.Compose([
             transforms.ToTensor(),
-            # normalize
+            normalize
             ])
 
-    train_dataset = CustomDataset(traindir, "train", transform_train)
-    eval_dataset = CustomDataset(traindir, "val", transform_eval)
+    train_dataset = CustomDataset(traindir, 'train', transform_train)
+    eval_dataset = CustomDataset(traindir, 'val', transform_eval)
 
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=args.batch_size, shuffle=True,
@@ -233,7 +234,7 @@ def train(train_loader, model, criterion, optimizer, epoch, args):
     BatchNorm in train mode may revise running mean/std (even if it receives
     no gradient), which are part of the model parameters too.
     """
-    model.eval()
+    # model.eval()
 
     end = time.time()
     for i, (images, target) in enumerate(train_loader):
@@ -278,7 +279,8 @@ def evaluate(eval_loader, model, args):
     correct = 0
     total = 0
     with torch.no_grad():
-        for i, (images, labels) in enumerate(eval_loader):
+        for data in eval_loader:
+            images, labels = data
             images = images.cuda(args.gpu, non_blocking=True)
             labels = labels.cuda(args.gpu, non_blocking=True)
 

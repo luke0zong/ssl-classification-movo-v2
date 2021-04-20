@@ -22,10 +22,8 @@ import torchvision.datasets as datasets
 import torchvision.models as models
 
 ############# Use own code ###############
-# import moco.loader
 from model.moco_loader import GaussianBlur, TwoCropsTransform
 from model.moco_builder import MoCo
-# from model.resnet50 import Resnet50
 from dataloader import CustomDataset
 
 model_names = sorted(name for name in models.__dict__
@@ -68,23 +66,11 @@ parser.add_argument('-p', '--print-freq', default=100, type=int,
                     metavar='N', help='print frequency (default: 100)')
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
-# parser.add_argument('--world-size', default=-1, type=int,
-#                     help='number of nodes for distributed training')
-# parser.add_argument('--rank', default=-1, type=int,
-#                     help='node rank for distributed training')
-# parser.add_argument('--dist-url', default='tcp://224.66.41.62:23456', type=str,
-#                     help='url used to set up distributed training')
-# parser.add_argument('--dist-backend', default='nccl', type=str,
-#                     help='distributed backend')
 parser.add_argument('--seed', default=None, type=int,
                     help='seed for initializing training. ')
 parser.add_argument('--gpu', default=None, type=int,
                     help='GPU id to use.')
-# parser.add_argument('--multiprocessing-distributed', action='store_true',
-#                     help='Use multi-processing distributed training to launch '
-#                          'N processes per node, which has N GPUs. This is the '
-#                          'fastest way to use PyTorch for either single node or '
-#                          'multi node data parallel training')
+
 
 # moco specific configs:
 parser.add_argument('--moco-dim', default=128, type=int,
@@ -228,15 +214,12 @@ def main_worker(gpu, ngpus_per_node, args):
 
     print("=> Start Training.")
     for epoch in range(args.start_epoch, args.epochs):
-        # if args.distributed:
-            # train_sampler.set_epoch(epoch)
+
         adjust_learning_rate(optimizer, epoch, args)
 
         # train for one epoch
         train(train_loader, model, criterion, optimizer, epoch, args)
 
-        # if not args.multiprocessing_distributed or (args.multiprocessing_distributed
-        #         and args.rank % ngpus_per_node == 0):
         if epoch==0 or (epoch+1) % args.save_checkpoint_per_epoch == 0:
             save_checkpoint({
                 'epoch': epoch + 1,

@@ -92,12 +92,12 @@ def main_worker(gpu, args):
     print("=> creating model '{}'".format(args.arch))
     model = models.__dict__[args.arch](num_classes=800, norm_layer=SubBatchNorm2d)
 
-    # freeze all layers but the last fc
-    for name, param in model.named_parameters():
-        if name not in ['fc.weight', 'fc.bias']:
-            param.requires_grad = False
+    # # freeze all layers but the last fc
+    # for name, param in model.named_parameters():
+    #     if name not in ['fc.weight', 'fc.bias']:
+    #         param.requires_grad = False
     # init the fc layer
-    model.fc.weight.data.normal_(mean=0.0, std=0.01)
+    model.fc.weight.data.normal_(mean=0.0, std=1.0)
     model.fc.bias.data.zero_()
 
     # load from pre-trained, before DistributedDataParallel constructor
@@ -124,7 +124,7 @@ def main_worker(gpu, args):
 
             print("=> loaded pre-trained model '{}'".format(args.pretrained))
         else:
-            print("=> no checkpoint found at '{}'".format(args.pretrained))
+            raise ValueError("=> no pre-trained model found at '{}'".format(args.pretrained))
 
 
     if args.gpu is not None:
@@ -139,10 +139,12 @@ def main_worker(gpu, args):
     # optimize only the linear classifier
     parameters = list(filter(lambda p: p.requires_grad, model.parameters()))
     assert len(parameters) == 2  # fc.weight, fc.bias
-    optimizer = torch.optim.SGD(parameters, args.lr,
-                                momentum=args.momentum,
-                                weight_decay=args.weight_decay)
-
+    # optimizer = torch.optim.SGD(parameters, args.lr,
+    #                             momentum=args.momentum,
+    #                             weight_decay=args.weight_decay)
+    optimizer = torch.optim.Adam(parameters, args.lr,
+                                 betas=(0.9, 0.999), eps=1e-08,
+                                 weight_decay=args.weight_decay)
 
     # optionally resume from a checkpoint
     if args.resume:
@@ -209,7 +211,7 @@ def main_worker(gpu, args):
                 'accuracy': accuracy,
                 'state_dict': model.state_dict(),
                 'optimizer': optimizer.state_dict(),
-            }, False, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:04d}.pth.tar'.format(epoch)))
+            }, False, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:03f}.pth.tar'.format(epoch+1)))
 
         # if epoch == args.start_epoch:
         #     sanity_check(model.state_dict(), args.pretrained)
@@ -222,7 +224,7 @@ def train(train_loader, model, criterion, optimizer, epoch, args):
     progress = ProgressMeter(
         len(train_loader),
         [batch_time, data_time, losses],
-        prefix="Epoch: [{}]".format(epoch))
+        prefix="Epoch: [{}]".format(epoch+1))
 
     """
     Switch to eval mode:

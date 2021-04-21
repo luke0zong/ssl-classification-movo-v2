@@ -94,9 +94,9 @@ def main_worker(gpu, args):
     model = models.__dict__[args.arch](num_classes=800)
 
     # # freeze all layers but the last fc
-    for name, param in model.named_parameters():
-        if name not in ['fc.weight', 'fc.bias']:
-            param.requires_grad = False
+    # for name, param in model.named_parameters():
+        # if name not in ['fc.weight', 'fc.bias']:
+            # param.requires_grad = False
     # init the fc layer
     # model.fc.weight.data.normal_(mean=0.0, std=1.0)
     # model.fc.bias.data.zero_()

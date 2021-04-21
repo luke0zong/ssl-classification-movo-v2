@@ -3,7 +3,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=n1s8-t4-1
 #SBATCH --account=dl09
-#SBATCH --time=02:00:00
+#SBATCH --time=10:00:00
 #SBATCH --output=dl09_%j.out
 #SBATCH --error=dl09_%j.err
 #SBATCH --exclusive

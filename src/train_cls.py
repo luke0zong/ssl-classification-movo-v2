@@ -138,14 +138,14 @@ def main_worker(gpu, args):
     criterion = nn.CrossEntropyLoss().cuda(args.gpu)
 
     # optimize only the linear classifier
-    parameters = list(filter(lambda p: p.requires_grad, model.parameters()))
-    assert len(parameters) == 2  # fc.weight, fc.bias
-    optimizer = torch.optim.SGD(parameters, args.lr,
+    # parameters = list(filter(lambda p: p.requires_grad, model.parameters()))
+    # assert len(parameters) == 2  # fc.weight, fc.bias
+    # optimizer = torch.optim.SGD(parameters, args.lr,
+    #                             momentum=args.momentum,
+    #                             weight_decay=args.weight_decay)
+    optimizer = torch.optim.SGD(model.parameters(), args.lr,
                                 momentum=args.momentum,
                                 weight_decay=args.weight_decay)
-    # optimizer = torch.optim.Adam(parameters, args.lr,
-    #                              betas=(0.9, 0.999), eps=1e-08,
-    #                              weight_decay=args.weight_decay)
 
     # optionally resume from a checkpoint
     if args.resume:
@@ -177,7 +177,7 @@ def main_worker(gpu, args):
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                      std=[0.229, 0.224, 0.225])
     transform_train = transforms.Compose([
-            # transforms.RandomHorizontalFlip(),
+            transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             normalize])
     transform_eval = transforms.Compose([
@@ -289,7 +289,7 @@ def evaluate(eval_loader, model, args):
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
 
-    return correct * 100 / total
+    return (100 * correct  / total)
 
 
 def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):

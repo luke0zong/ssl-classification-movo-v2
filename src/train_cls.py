@@ -94,12 +94,12 @@ def main_worker(gpu, args):
     model = models.__dict__[args.arch](num_classes=800)
 
     # # freeze all layers but the last fc
-    # for name, param in model.named_parameters():
-        # if name not in ['fc.weight', 'fc.bias']:
-            # param.requires_grad = False
+    for name, param in model.named_parameters():
+        if name not in ['fc.weight', 'fc.bias']:
+            param.requires_grad = False
     # init the fc layer
-    # model.fc.weight.data.normal_(mean=0.0, std=1.0)
-    # model.fc.bias.data.zero_()
+    model.fc.weight.data.normal_(mean=0.0, std=0.1)
+    model.fc.bias.data.zero_()
 
     # load from pre-trained, before DistributedDataParallel constructor
     if args.pretrained:
@@ -138,14 +138,14 @@ def main_worker(gpu, args):
     criterion = nn.CrossEntropyLoss().cuda(args.gpu)
 
     # optimize only the linear classifier
-    # parameters = list(filter(lambda p: p.requires_grad, model.parameters()))
-    # assert len(parameters) == 2  # fc.weight, fc.bias
-    # optimizer = torch.optim.SGD(parameters, args.lr,
-    #                             momentum=args.momentum,
-    #                             weight_decay=args.weight_decay)
-    optimizer = torch.optim.SGD(model.parameters(), args.lr,
+    parameters = list(filter(lambda p: p.requires_grad, model.parameters()))
+    assert len(parameters) == 2  # fc.weight, fc.bias
+    optimizer = torch.optim.SGD(parameters, args.lr,
                                 momentum=args.momentum,
                                 weight_decay=args.weight_decay)
+    # optimizer = torch.optim.SGD(model.parameters(), args.lr,
+    #                             momentum=args.momentum,
+    #                             weight_decay=args.weight_decay)
 
     # optionally resume from a checkpoint
     if args.resume:

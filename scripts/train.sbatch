@@ -3,7 +3,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=n1s8-t4-1
 #SBATCH --account=dl09
-#SBATCH --time=10:00:00
+#SBATCH --time=24:00:00
 #SBATCH --output=dl09_%j.out
 #SBATCH --error=dl09_%j.err
 #SBATCH --exclusive
@@ -34,11 +34,11 @@ singularity exec --nv \
 source /ext3/env.sh
 conda activate dev
 python train_cls.py --checkpoint-dir $SCRATCH/dl09/checkpoints \
-                    --epochs 100 \
+                    --epochs 300 \
                     --gpu 0 \
                     --lr 30 \
                     --pretrained $SCRATCH/dl09/pre_checkpoints/checkpoint_20.pth.tar \
                     --eval-per-n-epoch 1 \
-                    --batch-size 128 \
+                    --batch-size 64 \
                     /dataset
 "

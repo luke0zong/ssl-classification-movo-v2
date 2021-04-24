@@ -215,7 +215,7 @@ def main_worker(gpu, args):
                 'accuracy': accuracy,
                 'state_dict': model.state_dict(),
                 'optimizer': optimizer.state_dict(),
-            }, is_best, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:03f}.pth.tar'.format(epoch+1)))
+            }, is_best, dir=args.checkpoint_dir, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:03f}.pth.tar'.format(epoch+1)))
 
         # if epoch == args.start_epoch:
         #     sanity_check(model.state_dict(), args.pretrained)
@@ -295,10 +295,12 @@ def evaluate(eval_loader, model, args):
     return (100 * correct  / total)
 
 
-def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
+def save_checkpoint(state, is_best, save_dir, filename='checkpoint.pth.tar'):
     torch.save(state, filename)
+    best_checkpoint = os.path.join(
+        save_dir, 'model_best.pth')
     if is_best:
-        shutil.copyfile(filename, 'model_best.pth.tar')
+        shutil.copyfile(filename, best_checkpoint)
 
 
 def sanity_check(state_dict, pretrained_weights):

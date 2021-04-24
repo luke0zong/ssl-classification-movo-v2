@@ -27,3 +27,16 @@ Deep Learning Final Competition Team DL09
 ## work sep
     - Yaowei: Run scripts and train model on gcp
     - Arthur: Create models and train.py
+
+## TODO
+### Yaowei:
+1. moco-dim
+2. solve cuda memory bug of pretrain_continue.sbatch
+3. (optional) use 2 gpus
+
+### Arthur:
+1. add convert pretrain model to train model
+2. train
+
+### Future:
+1. get_model

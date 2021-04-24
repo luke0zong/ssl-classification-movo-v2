@@ -2,9 +2,9 @@
 
 from torchvision import models, transforms
 
-team_id = 1
-team_name = "your_team_name"
-email_address = "team_leader_nyu_email_address@nyu.edu"
+team_id = 9
+team_name = "Bai Ze"
+email_address = "jg5505@nyu.edu"
 
 def get_model():
     return models.resnet18(num_classes=800)

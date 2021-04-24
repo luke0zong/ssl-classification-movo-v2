@@ -206,13 +206,16 @@ def main_worker(gpu, args):
         if epoch == 0 or (epoch + 1) % args.eval_per_n_epoch == 0:
             accuracy = evaluate(eval_loader, model, args)
             print(f"=> Epoch: {epoch+1}, accuracy: {accuracy:.4f}")
+            # remember best acc and save checkpoint
+            is_best = accuracy > best_acc1
+            best_acc1 = max(accuracy, best_acc1)
             save_checkpoint({
                 'epoch': epoch + 1,
                 'arch': args.arch,
                 'accuracy': accuracy,
                 'state_dict': model.state_dict(),
                 'optimizer': optimizer.state_dict(),
-            }, False, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:03f}.pth.tar'.format(epoch+1)))
+            }, is_best, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:03f}.pth.tar'.format(epoch+1)))
 
         # if epoch == args.start_epoch:
         #     sanity_check(model.state_dict(), args.pretrained)

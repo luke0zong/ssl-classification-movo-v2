@@ -35,13 +35,6 @@ singularity exec --nv \
 /bin/bash -c "
 source /ext3/env.sh
 conda activate dev
-<<<<<<< HEAD
-python pre_train.py --checkpoint_dir $SCRATCH/dl09/pre_checkpoints \
-                        --epochs 10 \
-                        --gpu 0 \
-                        --mlp --aug-plus --cos \
-                        /dataset
-=======
 python pre_train.py --checkpoint-dir $SCRATCH/dl09/pre_checkpoints \
                     --epochs 100 \
                     --arch resnet50 \
@@ -50,5 +43,4 @@ python pre_train.py --checkpoint-dir $SCRATCH/dl09/pre_checkpoints \
                     --moco-k 2048 \
                     --save-checkpoint-per-epoch 5 \
                     /dataset
->>>>>>> dev-arthur
 "

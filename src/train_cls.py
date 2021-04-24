@@ -20,7 +20,7 @@ import torch.nn.functional as F
 from dataloader import CustomDataset
 from model.subbatchnorm import SubBatchNorm2d
 
-parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
+parser = argparse.ArgumentParser(description='DL09 MoCo Training')
 parser.add_argument('data', metavar='DIR',
                     help='path to dataset')
 parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet50')
@@ -169,7 +169,7 @@ def main_worker(gpu, args):
             del checkpoint
         else:
             print("=> no checkpoint found at '{}'".format(args.resume))
-    
+
     cudnn.benchmark = True
 
     # Data loading code
@@ -197,7 +197,7 @@ def main_worker(gpu, args):
 
     # training code
     for epoch in range(args.start_epoch, args.epochs):
-        
+
         adjust_learning_rate(optimizer, epoch, args)
 
         # train for one epoch
@@ -216,7 +216,7 @@ def main_worker(gpu, args):
 
         # if epoch == args.start_epoch:
         #     sanity_check(model.state_dict(), args.pretrained)
-        
+
 
 def train(train_loader, model, criterion, optimizer, epoch, args):
     batch_time = AverageMeter('Time', ':6.3f')

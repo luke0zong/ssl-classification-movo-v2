@@ -27,17 +27,17 @@ tail -F $HOME/dl09/scripts/dl09_${SLURM_JOB_ID}.out >> $SCRATCH/log/${SLURM_JOB_
 
 singularity exec --nv \
 --bind /scratch \
---overlay /scratch/DL21SP/conda.sqsh:ro \
+--overlay /scratch/DL21SP/conda_fixed.sqsh:ro \
 --overlay /tmp/student_dataset.sqsh:ro \
 /share/apps/images/cuda11.1-cudnn8-devel-ubuntu18.04.sif \
 /bin/bash -c "
 source /ext3/env.sh
 conda activate dev
-python train_cls.py --checkpoint-dir $SCRATCH/dl09/checkpoints_small \
+python train_cls.py --checkpoint-dir $SCRATCH/dl09/checkpoints \
                     --epochs 100 \
                     --gpu 0 \
                     --lr 30 \
-                    --pretrained $SCRATCH/dl09/pre_checkpoints_small/checkpoint_100.pth.tar \
+                    --pretrained $SCRATCH/dl09/pre_checkpoints/checkpoint_20.pth.tar \
                     --eval-per-n-epoch 1 \
                     --batch-size 64 \
                     /dataset

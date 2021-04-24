@@ -39,6 +39,6 @@ python train_cls.py --checkpoint-dir $SCRATCH/dl09/checkpoints \
                     --lr 30 \
                     --pretrained $SCRATCH/dl09/pre_checkpoints/checkpoint_20.pth.tar \
                     --eval-per-n-epoch 1 \
-                    --batch-size 64 \
+                    --batch-size 128 \
                     /dataset
 "

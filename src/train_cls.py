@@ -90,8 +90,8 @@ def main_worker(gpu, args):
 
     # create model
     print("=> creating model '{}'".format(args.arch))
-    # model = models.__dict__[args.arch](num_classes=800, norm_layer=SubBatchNorm2d)
-    model = models.__dict__[args.arch](num_classes=800)
+    model = models.__dict__[args.arch](num_classes=800, norm_layer=SubBatchNorm2d)
+    # model = models.__dict__[args.arch](num_classes=800)
 
     # # freeze all layers but the last fc
     for name, param in model.named_parameters():

@@ -9,7 +9,7 @@ class Classifier(pl.LightningModule):
         super().__init__()
         # create a moco based on ResNet
         # self.resnet_moco = model
-        self.resnet = model.backbone
+        self.resnet = model.resnet_moco.backbone
 
         # freeze the layers of moco
         for p in self.resnet.parameters():  # reset requires_grad

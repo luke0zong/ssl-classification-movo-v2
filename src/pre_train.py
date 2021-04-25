@@ -87,7 +87,7 @@ def main():
     collate_fn = lightly.data.collate.SimCLRCollateFunction(input_size=96, gaussian_blur=0.1)
 
     #### train dataloader
-    train_dataset = CustomDataset(traindir, "unlabeled", transforms.Compose([])) # use empty transform
+    train_dataset = CustomDataset(args.data, "unlabeled", transforms.Compose([])) # use empty transform
     train_loader = torch.utils.data.DataLoader(train_dataset, 
                                                 batch_size=args.batch_size, 
                                                 shuffle=True,

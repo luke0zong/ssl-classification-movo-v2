@@ -8,10 +8,11 @@ class Classifier(pl.LightningModule):
     def __init__(self, model):
         super().__init__()
         # create a moco based on ResNet
-        self.resnet_moco = model
+        # self.resnet_moco = model
+        self.resnet = model.backbone
 
         # freeze the layers of moco
-        for p in self.resnet_moco.parameters():  # reset requires_grad
+        for p in self.resnet.parameters():  # reset requires_grad
             p.requires_grad = False
 
         self.fc = nn.Linear(512, 800)
@@ -20,7 +21,7 @@ class Classifier(pl.LightningModule):
 
     def forward(self, x):
         with torch.no_grad():
-            y_hat = self.resnet_moco.backbone(x).squeeze()
+            y_hat = self.resnet(x).squeeze()
             y_hat = nn.functional.normalize(y_hat, dim=1)
         y_hat = self.fc(y_hat)
         return y_hat

@@ -11,6 +11,7 @@ from pytorch_lightning.callbacks.model_checkpoint import ModelCheckpoint
 
 from dataloader import CustomDataset
 from moco import MocoModel
+from classifier import Classifier
 
 parser = argparse.ArgumentParser(description='dl09 pretrain moco')
 
@@ -31,6 +32,8 @@ parser.add_argument('--save-checkpoint-per-epoch', default=5, type=int, metavar=
                     help='save checkpoint on how many opechs (default: 5)')
 parser.add_argument('--checkpoint-dir', default='../checkpoints', type=str, metavar='DIR',
                     help='dir to save checkpoints')
+parser.add_argument('--pretrain-dir', default='../checkpoints', type=str, metavar='DIR',
+                    help='dir to pretrained checkpoints')
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
 parser.add_argument('--gpus', default=1, type=int,
@@ -54,27 +57,22 @@ parser.add_argument('--moco-t', default=0.2, type=float,
                     help='softmax temperature (default: 0.2)')
 parser.add_argument('--num-splits', default=8, type=int,
                     help='Split number for SplitBatchNorm (default:8)')
-#### test run config
-# test train option
-parser.add_argument('--small-set', action='store_true',
-                    help='use smaller training set (1/10)')
 
 
 def main():
     args = parser.parse_args()
 
+    if not os.path.isdir(args.pretrain_dir]):
+        raise ValueError(f"pretrain dir does not exist: {args.pretrain_dir]}")
+
     if args.checkpoint_dir:
         if not os.path.isdir(args.checkpoint_dir):
             raise ValueError(f"checkpoint dir does not exist: {args.checkpoint_dir}")
 
-    if args.resume:
-        if not os.path.isfile(args.resume):
-            raise ValueError(f"resume checkpoint does not exist: {args.resume}")
-
     ###################### training starts! ######################    
     #### load model
-    print("=> creating model ")
-    model = MocoModel(moco_dim=args.moco_dim,
+    print("=> loading pretrained model ")
+    moco = MocoModel(moco_dim=args.moco_dim,
                       moco_k=args.moco_k,
                       moco_m=args.moco_m,
                       moco_t=args.moco_t,
@@ -82,54 +80,62 @@ def main():
                       lr=args.lr,
                       momentum=args.momentum,
                       weight_decay=args.weight_decay)
-    print(model)
+    moco.load_from_checkpoint(args.pretrain_dir)
+    moco.eval()
 
-    #### augmentation as a collate_fn
-    collate_fn = lightly.data.collate.SimCLRCollateFunction(input_size=96, gaussian_blur=0.1)
+    #### create cls
+    print("=> creating classifier model")
+    model = Classifier(moco)
+    del moco
 
-    #### train dataloader
-    base = CustomDataset(args.data, "unlabeled", None) # use empty transform
-    train_dataset = lightly.data.LightlyDataset.from_torch_dataset(base)
-    train_loader = torch.utils.data.DataLoader(train_dataset, 
-                                                batch_size=args.batch_size, 
-                                                shuffle=True,
-                                                num_workers=args.workers, 
-                                                pin_memory=True, 
-                                                drop_last=True,
-                                                collate_fn=collate_fn)
+    #### create augmentation
+    train_classifier_transforms = torchvision.transforms.Compose([
+    torchvision.transforms.RandomHorizontalFlip(),
+    torchvision.transforms.ToTensor(),
+    torchvision.transforms.Normalize(
+        mean=lightly.data.collate.imagenet_normalize['mean'],
+        std=lightly.data.collate.imagenet_normalize['std'])])
+    # No additional augmentations for the test set
+    test_transforms = torchvision.transforms.Compose([
+    torchvision.transforms.ToTensor(),
+    torchvision.transforms.Normalize(
+        mean=lightly.data.collate.imagenet_normalize['mean'],
+        std=lightly.data.collate.imagenet_normalize['std'])])
 
-    #### set training set ratio
-    if args.small_set:
-        print('=> Using 1/10 unlabeled set')
-        overfit_batches = 0.1
-    else:
-        print('=> Using full unlabeled set')
-        overfit_batches = 0.0
+    train_dataset = CustomDataset(args.data, 'train', train_classifier_transforms)
+    eval_dataset = CustomDataset(args.data, 'val', test_transforms)
 
-    #### resume checkpoints
-    if args.resume:
-        if os.path.isfile(args.resume):
-            print("=> loading checkpoint '{}'".format(args.resume))
-            checkpoint_path = args.resume
-    else:
-        checkpoint_path = None
+    dataset_train_classifier = lightly.data.LightlyDataset.from_torch_dataset(train_dataset)
+    dataset_eval_classifier = lightly.data.LightlyDataset.from_torch_dataset(eval_dataset)
 
-    #### save checkpoint path
+    dataloader_train_classifier = torch.utils.data.DataLoader(
+        dataset_train_classifier,
+        batch_size=args.batch_size,
+        shuffle=True,
+        drop_last=True,
+        num_workers=args.workers)
+
+    dataloader_test = torch.utils.data.DataLoader(
+        dataset_test,
+        batch_size=args.batch_size,
+        shuffle=False,
+        drop_last=False,
+        num_workers=args.workers)
+
+    #### create trainer
     checkpoint_callback = ModelCheckpoint(dirpath=args.checkpoint_dir,
                                           filename='pretrain_{epoch:03d}_{loss:.2f}',
                                           period=args.save_checkpoint_per_epoch)
-
     trainer = pl.Trainer(max_epochs=args.epochs, 
                          gpus=args.gpus,
                          progress_bar_refresh_rate=100,
                          overfit_batches=overfit_batches,
                          resume_from_checkpoint=checkpoint_path,
                          benchmark=True,
-                        #  auto_lr_find=True,
                          callbacks=[checkpoint_callback]) 
 
     print("=> Start training")
-    trainer.fit(model=model, train_dataloader=train_loader)
+    trainer.fit(model, dataloader_train_classifier, dataloader_test)
 
 
 if __name__ == '__main__':

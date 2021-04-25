@@ -63,7 +63,7 @@ def main():
     args = parser.parse_args()
 
     if not os.path.isdir(args.pretrain_dir):
-        raise ValueError(f"pretrain dir does not exist: {args.pretrain_dir]}")
+        raise ValueError(f"pretrain dir does not exist: {args.pretrain_dir}")
 
     if args.checkpoint_dir:
         if not os.path.isdir(args.checkpoint_dir):

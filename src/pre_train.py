@@ -1,12 +1,13 @@
 import os
+import argparse
 import torch
 import torch.nn as nn
 import torchvision
 import lightly
 import pytorch_lightning as pl
-import argparse
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
+from pytorch_lightning.callbacks.model_checkpoint import ModelCheckpoint
 
 from dataloader import CustomDataset
 from moco import MocoModel
@@ -126,7 +127,7 @@ def main():
                          callbacks=[checkpoint_callback]
                          ) 
 
-
+    print("=> Start training")
     trainer.fit(model=model, train_dataloader=train_loader)
 
 

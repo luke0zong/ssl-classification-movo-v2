@@ -5,11 +5,12 @@ import pytorch_lightning as pl
 import lightly
 
 class Classifier(pl.LightningModule):
-    def __init__(self, model):
+    def __init__(self, model, lr):
         super().__init__()
         # create a moco based on ResNet
         # self.resnet_moco = model
         self.resnet = model.resnet_moco.backbone
+        self.lr = lr
 
         # freeze the layers of moco
         for p in self.resnet.parameters():  # reset requires_grad
@@ -50,7 +51,7 @@ class Classifier(pl.LightningModule):
         self.log('val_acc', self.accuracy.compute(),
                  on_epoch=True, prog_bar=True)
 
-    def configure_optimizers(self, lr):
-        optim = torch.optim.SGD(self.fc.parameters(), lr=lr)
+    def configure_optimizers(self):
+        optim = torch.optim.SGD(self.fc.parameters(), lr=self.lr)
         scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optim, max_epochs)
         return [optim], [scheduler]

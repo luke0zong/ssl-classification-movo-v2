@@ -119,7 +119,7 @@ def main():
                                           period=args.save_checkpoint_per_epoch)
 
     trainer = pl.Trainer(max_epochs=args.epochs, 
-                         gpus=gpus,
+                         gpus=args.gpus,
                          progress_bar_refresh_rate=100,
                          overfit_batches=overfit_batches,
                          resume_from_checkpoint=checkpoint_path,

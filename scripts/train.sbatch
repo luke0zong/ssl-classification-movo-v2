@@ -33,7 +33,7 @@ singularity exec --nv \
 source /ext3/env.sh
 conda activate dev
 python train_cls.py --checkpoint-dir $SCRATCH/dl09/checkpoints \
-                    --pretrain-dir $SCRATCH/dl09/pre_checkpoints/pretrain_epoch=004_loss==0.00.ckpt
+                    --pretrain-dir $SCRATCH/dl09/pre_checkpoints/pretrain_epoch=004_loss==0.00.ckpt \
                     --save-checkpoint-per-epoch 5 \
                     --epochs 100 \
                     --batch-size 128 \

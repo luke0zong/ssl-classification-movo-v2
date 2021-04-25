@@ -138,8 +138,6 @@ def main():
     trainer = pl.Trainer(max_epochs=args.epochs, 
                          gpus=args.gpus,
                          progress_bar_refresh_rate=100,
-                         overfit_batches=overfit_batches,
-                         resume_from_checkpoint=checkpoint_path,
                          benchmark=True,
                          callbacks=[checkpoint_callback]) 
 

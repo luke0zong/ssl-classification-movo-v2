@@ -14,7 +14,7 @@ class MocoModel(pl.LightningModule):
         self.num_splits = num_splits
         self.lr = lr
         self.momentum = momentum
-        self.weight_decay
+        self.weight_decay = weight_decay
 
         # create a ResNet backbone and remove the classification head
         resnet = lightly.models.ResNetGenerator('resnet-18', num_splits=self.num_splits)

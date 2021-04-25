@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
 import torchvision
-import pytorch_lightning as pl
 import lightly
+import pytorch_lightning as pl
 import argparse
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
@@ -127,3 +127,7 @@ def main():
 
 
     trainer.fit(model=model, train_dataloader=train_loader)
+
+
+if __name__ == '__main__':
+    main()

@@ -62,7 +62,7 @@ parser.add_argument('--num-splits', default=8, type=int,
 def main():
     args = parser.parse_args()
 
-    if not os.path.isdir(args.pretrain_dir):
+    if not os.path.isfile(args.pretrain_dir):
         raise ValueError(f"pretrain dir does not exist: {args.pretrain_dir}")
 
     if args.checkpoint_dir:

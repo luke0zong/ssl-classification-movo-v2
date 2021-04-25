@@ -29,7 +29,7 @@ tail -F $HOME/dl09/scripts/dl09_${SLURM_JOB_ID}.out >> $SCRATCH/log/${SLURM_JOB_
 
 singularity exec --nv \
 --bind /scratch \
---overlay /scratch/DL21SP/conda_fixed.sqsh:ro \
+--overlay $SCRATCH/dl09/env/conda_lightly.ext3:ro \
 --overlay /tmp/student_dataset.sqsh:ro \
 /share/apps/images/cuda11.1-cudnn8-devel-ubuntu18.04.sif \
 /bin/bash -c "

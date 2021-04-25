@@ -215,7 +215,7 @@ def main_worker(gpu, args):
                 'accuracy': accuracy,
                 'state_dict': model.state_dict(),
                 'optimizer': optimizer.state_dict(),
-            }, is_best, dir=args.checkpoint_dir, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:03f}.pth.tar'.format(epoch+1)))
+            }, is_best, save_dir=args.checkpoint_dir, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:03f}.pth.tar'.format(epoch+1)))
 
         # if epoch == args.start_epoch:
         #     sanity_check(model.state_dict(), args.pretrained)

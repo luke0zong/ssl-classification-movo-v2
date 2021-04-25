@@ -36,7 +36,7 @@ python pre_train.py --checkpoint-dir $SCRATCH/dl09/pre_checkpoints \
                     --save-checkpoint-per-epoch 5 \
                     --epochs 100 \
                     --batch-size 256 \
-                    --workers 4 \
+                    --workers 2 \
                     --gpus 1 \
                     --lr 0.006 \
                     --momentum 0.9 \

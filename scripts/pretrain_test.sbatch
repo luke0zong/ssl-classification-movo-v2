@@ -40,7 +40,8 @@ python pre_train.py --checkpoint-dir $SCRATCH/dl09/pre_checkpoints \
                     --arch resnet50 \
                     --gpu 0 \
                     --mlp --aug-plus --cos \
-                    --moco-k 2048 \
+                    --moco-k 4096 \
+                    --batch-size 256 \
                     --save-checkpoint-per-epoch 5 \
                     /dataset
 "

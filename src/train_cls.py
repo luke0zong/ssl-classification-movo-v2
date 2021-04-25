@@ -125,7 +125,7 @@ def main():
         num_workers=args.workers)
 
     dataloader_test = torch.utils.data.DataLoader(
-        dataset_test,
+        dataset_eval_classifier,
         batch_size=args.batch_size,
         shuffle=False,
         drop_last=False,

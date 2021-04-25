@@ -36,5 +36,8 @@ class CustomDataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         with open(os.path.join(self.image_dir, f"{idx}.png"), 'rb') as f:
             img = Image.open(f).convert('RGB')
-
-        return self.transform(img), self.labels[idx]
+        
+        if self.transform is None:
+            return img, self.labels[idx]
+        else:
+            return self.transform(img), self.labels[idx]

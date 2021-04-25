@@ -58,5 +58,5 @@ class MocoModel(pl.LightningModule):
                                 lr=self.lr,
                                 momentum=self.momentum, 
                                 weight_decay=self.weight_decay)
-        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optim, max_epochs)
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optim, 100)
         return [optim], [scheduler]

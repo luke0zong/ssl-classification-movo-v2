@@ -77,10 +77,19 @@ def main():
                       moco_m=args.moco_m,
                       moco_t=args.moco_t,
                       num_splits=args.num_splits,
-                      lr=args.lr,
+                      lr=0.0075,
                       momentum=args.momentum,
                       weight_decay=args.weight_decay)
-    moco.load_from_checkpoint(args.pretrain_dir)
+    moco.load_from_checkpoint(args.pretrain_dir,
+                                moco_dim=args.moco_dim,
+                                moco_k=args.moco_k,
+                                moco_m=args.moco_m,
+                                moco_t=args.moco_t,
+                                num_splits=args.num_splits,
+                                lr=0.0075,
+                                momentum=args.momentum,
+                                weight_decay=args.weight_decay)
+
     moco.eval()
 
     #### create cls

@@ -23,7 +23,8 @@ class Classifier(pl.LightningModule):
     def forward(self, x):
         with torch.no_grad():
             y_hat = self.resnet(x).squeeze()
-            y_hat = nn.functional.normalize(y_hat, dim=1)
+            # y_hat = nn.functional.normalize(y_hat, dim=1)
+            y_hat = nn.functional.argmax(y_hat, dim=1)
         y_hat = self.fc(y_hat)
         return y_hat
 

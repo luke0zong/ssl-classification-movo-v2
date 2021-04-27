@@ -53,5 +53,6 @@ class Classifier(pl.LightningModule):
 
     def configure_optimizers(self):
         optim = torch.optim.SGD(self.fc.parameters(), lr=self.lr)
-        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optim, 100)
+        # scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optim, 100)
+        scheduler = torch.optim.lr_scheduler.MultiStepLR(optim, milestones=[40, 80], gamma=0.1)
         return [optim], [scheduler]

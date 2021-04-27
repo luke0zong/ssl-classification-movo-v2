@@ -39,7 +39,7 @@ python train_cls.py --checkpoint-dir $SCRATCH/dl09/checkpoints \
                     --batch-size 256 \
                     --workers 8 \
                     --gpus 1 \
-                    --lr 30 \
+                    --lr 60 \
                     --momentum 0.9 \
                     --weight-decay 5e-4 \
                     --moco-dim 128 \

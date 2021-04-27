@@ -26,7 +26,7 @@ cd $HOME/dl09/src
 
 singularity exec --nv \
 --bind /scratch \
---overlay $SCRATCH/dl09/env/conda_lightly.ext3:rwx \
+--overlay $SCRATCH/dl09/env/conda_lightly.ext3:ro \
 --overlay /tmp/student_dataset.sqsh:ro \
 /share/apps/images/cuda11.1-cudnn8-devel-ubuntu18.04.sif \
 /bin/bash -c "

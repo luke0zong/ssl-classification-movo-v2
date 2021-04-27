@@ -139,8 +139,13 @@ def main():
                          gpus=args.gpus,
                          progress_bar_refresh_rate=10,
                          benchmark=True,
-                         callbacks=[checkpoint_callback]) 
+                         callbacks=[checkpoint_callback],
+                         auto_scale_batch_size='binsearch',
+                         auto_lr_find=True)
 
+    print("=> Tuning BS and LR")
+    trainer.tune(model, dataloader_train_classifier, dataloader_test)
+    
     print("=> Start training")
     trainer.fit(model, dataloader_train_classifier, dataloader_test)
 

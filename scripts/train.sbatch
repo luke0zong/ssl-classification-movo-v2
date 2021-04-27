@@ -37,7 +37,7 @@ python train_cls.py --checkpoint-dir $SCRATCH/dl09/checkpoints \
                     --save-checkpoint-per-epoch 5 \
                     --epochs 100 \
                     --batch-size 128 \
-                    --workers 4 \
+                    --workers 2 \
                     --gpus 1 \
                     --lr 30 \
                     --momentum 0.9 \

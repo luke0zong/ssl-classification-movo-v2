@@ -26,14 +26,14 @@ cd $HOME/dl09/src
 
 singularity exec --nv \
 --bind /scratch \
---overlay $SCRATCH/dl09/env/conda_lightly.ext3:ro \
+--overlay $SCRATCH/dl09/env/conda_lightly.ext3:rwx \
 --overlay /tmp/student_dataset.sqsh:ro \
 /share/apps/images/cuda11.1-cudnn8-devel-ubuntu18.04.sif \
 /bin/bash -c "
 source /ext3/env.sh
 conda activate dev
 python train_cls.py --checkpoint-dir $SCRATCH/dl09/checkpoints \
-                    --pretrain-dir $SCRATCH/dl09/pre_checkpoints/pretrain_epoch=004_loss=0.00.ckpt \
+                    --pretrain-dir $SCRATCH/dl09/pre_checkpoints/pretrain_epoch=014_loss=0.00.ckpt \
                     --save-checkpoint-per-epoch 5 \
                     --epochs 100 \
                     --batch-size 128 \

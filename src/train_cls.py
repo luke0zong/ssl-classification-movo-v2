@@ -128,7 +128,7 @@ def main():
     dataloader_test = torch.utils.data.DataLoader(
         dataset_eval_classifier,
         batch_size=args.batch_size,
-        pin_memory=True
+        pin_memory=True,
         shuffle=False,
         drop_last=False,
         num_workers=args.workers)

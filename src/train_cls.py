@@ -71,7 +71,7 @@ def main():
 
     ###################### training starts! ######################    
     #### load model
-    print(f"=> loading pretrained model {args.checkpoint_dir}")
+    print(f"=> loading pretrained model {args.pretrain_dir}")
     moco = MocoModel(moco_dim=args.moco_dim,
                       moco_k=args.moco_k,
                       moco_m=args.moco_m,

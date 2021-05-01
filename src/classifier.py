@@ -17,11 +17,9 @@ class Classifier(pl.LightningModule):
         for p in self.resnet.parameters():  # reset requires_grad
             p.requires_grad = False
 
-        self.fc = nn.Sequential(
-            nn.Linear(512, 512),
-            nn.ReLU(),
-            nn.Linear(512, 800)
-        )
+        self.fc = nn.Linear(512, 800)
+        self.fc.weight.data.normal_(mean=0.0, std=0.01)
+        self.fc.bias.data.zero_()
 
         self.accuracy = pl.metrics.Accuracy()
 

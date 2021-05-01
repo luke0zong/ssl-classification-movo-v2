@@ -142,11 +142,11 @@ def main():
                          progress_bar_refresh_rate=10,
                          benchmark=True,
                          callbacks=[checkpoint_callback],
-                        #  auto_lr_find=True
+                         auto_lr_find=True
                          )
 
-    # print("=> Tuning learning rate")
-    # trainer.tune(model, dataloader_train_classifier, dataloader_test)
+    print("=> Tuning learning rate")
+    trainer.tune(model, dataloader_train_classifier, dataloader_test)
     
     print("=> Start training")
     trainer.fit(model, dataloader_train_classifier, dataloader_test)

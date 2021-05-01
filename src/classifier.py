@@ -20,8 +20,8 @@ class Classifier(pl.LightningModule):
             p.requires_grad = False
 
         self.fc = nn.Linear(512, 800)
-        # self.fc.weight.data.normal_(mean=0.0, std=0.01)
-        # self.fc.bias.data.zero_()
+        self.fc.weight.data.normal_(mean=0.0, std=0.01)
+        self.fc.bias.data.zero_()
 
         self.accuracy = pl.metrics.Accuracy()
 

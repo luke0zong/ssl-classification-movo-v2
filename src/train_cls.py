@@ -99,7 +99,8 @@ def main():
 
     #### create augmentation
     train_classifier_transforms = torchvision.transforms.Compose([
-    torchvision.transforms.RandomCrop(96, padding=4),
+    # torchvision.transforms.RandomCrop(96, padding=4),
+    torchvision.transforms.RandomResizedCrop(96, scale=(0.5, 1)),
     torchvision.transforms.RandomHorizontalFlip(),
     torchvision.transforms.ToTensor(),
     torchvision.transforms.Normalize(

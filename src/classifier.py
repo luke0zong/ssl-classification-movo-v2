@@ -62,5 +62,5 @@ class Classifier(pl.LightningModule):
         #     [{'params': self.resnet.parameters(), 'lr': 0.006},
         #     {'params': self.fc.parameters(), 'lr': self.lr}],
         #     momentum=0.9)
-        scheduler = torch.optim.lr_scheduler.MultiStepLR(optim, milestones=[50， 80], gamma=0.1)
+        scheduler = torch.optim.lr_scheduler.MultiStepLR(optim, milestones=[50, 80], gamma=0.1)
         return [optim], [scheduler]

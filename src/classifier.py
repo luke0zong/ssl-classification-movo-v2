@@ -14,8 +14,8 @@ class Classifier(pl.LightningModule):
         self.lr = lr
 
         # freeze the layers of moco
-        # for p in self.resnet.parameters():  # reset requires_grad
-        #     p.requires_grad = False
+        for p in self.resnet.parameters():  # reset requires_grad
+            p.requires_grad = False
 
         self.fc = nn.Sequential(
             nn.Linear(512, 512),

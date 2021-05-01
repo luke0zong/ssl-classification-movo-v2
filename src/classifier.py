@@ -60,7 +60,7 @@ class Classifier(pl.LightningModule):
         # optim = torch.optim.SGD(self.fc.parameters(), lr=self.lr)
         optim = torch.optim.SGD(
             [{'params': self.resnet.parameters(), 'lr': 0.006},
-            {'params': self.fc.parameters, 'lr': self.lr}],
+            {'params': self.fc.parameters(), 'lr': self.lr}],
             momentum=0.9)
         # scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optim, 100)
         scheduler = torch.optim.lr_scheduler.MultiStepLR(optim, milestones=[40, 80], gamma=0.1)

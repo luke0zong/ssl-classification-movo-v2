@@ -15,7 +15,7 @@ class Classifier(pl.LightningModule):
 
         # freeze the layers of moco
         # for p in self.resnet.parameters():  # reset requires_grad
-            # p.requires_grad = False
+        #     p.requires_grad = False
 
         self.fc = nn.Sequential(
             nn.Linear(512, 512),
@@ -28,7 +28,7 @@ class Classifier(pl.LightningModule):
     def forward(self, x):
         with torch.no_grad():
             y_hat = self.resnet(x).squeeze()
-            y_hat = nn.functional.normalize(y_hat, dim=1)
+            # y_hat = nn.functional.normalize(y_hat, dim=1)
         y_hat = self.fc(y_hat)
         return y_hat
 
@@ -57,11 +57,10 @@ class Classifier(pl.LightningModule):
                  on_epoch=True, prog_bar=True)
 
     def configure_optimizers(self):
-        # optim = torch.optim.SGD(self.fc.parameters(), lr=self.lr)
-        optim = torch.optim.SGD(
-            [{'params': self.resnet.parameters(), 'lr': 0.006},
-            {'params': self.fc.parameters(), 'lr': self.lr}],
-            momentum=0.9)
-        # scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optim, 100)
-        scheduler = torch.optim.lr_scheduler.MultiStepLR(optim, milestones=[40, 80], gamma=0.1)
+        optim = torch.optim.SGD(self.fc.parameters(), lr=self.lr)
+        # optim = torch.optim.SGD(
+        #     [{'params': self.resnet.parameters(), 'lr': 0.006},
+        #     {'params': self.fc.parameters(), 'lr': self.lr}],
+        #     momentum=0.9)
+        scheduler = torch.optim.lr_scheduler.MultiStepLR(optim, milestones=[50， 80], gamma=0.1)
         return [optim], [scheduler]

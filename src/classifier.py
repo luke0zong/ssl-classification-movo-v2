@@ -13,10 +13,14 @@ class Classifier(pl.LightningModule):
         self.lr = lr
 
         # freeze the layers of moco
-        for p in self.resnet.parameters():  # reset requires_grad
-            p.requires_grad = False
+        # for p in self.resnet.parameters():  # reset requires_grad
+            # p.requires_grad = False
 
-        self.fc = nn.Linear(512, 800)
+        self.fc = nn.Sequential(
+            nn.Linear(512, 512),
+            nn.ReLU(),
+            nn.Linear(512, 800)
+        )
 
         self.accuracy = pl.metrics.Accuracy()
 
@@ -52,7 +56,10 @@ class Classifier(pl.LightningModule):
                  on_epoch=True, prog_bar=True)
 
     def configure_optimizers(self):
-        optim = torch.optim.SGD(self.fc.parameters(), lr=self.lr)
+        # optim = torch.optim.SGD(self.fc.parameters(), lr=self.lr)
+        optim = torch.optim.SGD(
+            {'params': self.resnet.parameters(), 'lr': 0.006},
+            {'params': self.fc.parameters, 'lr': self.lr}, momentum=0.9)
         # scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optim, 100)
         scheduler = torch.optim.lr_scheduler.MultiStepLR(optim, milestones=[40, 80], gamma=0.1)
         return [optim], [scheduler]

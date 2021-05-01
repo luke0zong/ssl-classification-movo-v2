@@ -8,34 +8,30 @@ class Classifier(pl.LightningModule):
     def __init__(self, model, lr):
         super().__init__()
         # create a moco based on ResNet
-        # self.resnet_moco = model
-        self.resnet = model.resnet_moco.backbone
-        self.resnet.eval()
+        self.resnet_moco = model
+        # self.resnet = model.resnet_moco.backbone
+        # self.resnet.eval()
         self.lr = lr
 
         # freeze the layers of moco
-        for p in self.resnet.parameters():  # reset requires_grad
+        # for p in self.resnet.parameters():  # reset requires_grad
+        #     p.requires_grad = False
+        for p in self.resnet_moco.parameters():  # reset requires_grad
             p.requires_grad = False
 
         self.fc = nn.Linear(512, 800)
-        self.fc.weight.data.normal_(mean=0.0, std=0.01)
-        self.fc.bias.data.zero_()
+        # self.fc.weight.data.normal_(mean=0.0, std=0.01)
+        # self.fc.bias.data.zero_()
 
         self.accuracy = pl.metrics.Accuracy()
 
     def forward(self, x):
         with torch.no_grad():
-            y_hat = self.resnet(x).squeeze()
-            # y_hat = nn.functional.normalize(y_hat, dim=1)
+            # y_hat = self.resnet(x).squeeze()
+            y_hat = self.resnet_moco.backbone(x).squeeze()
+            y_hat = nn.functional.normalize(y_hat, dim=1)
         y_hat = self.fc(y_hat)
         return y_hat
-
-    # We provide a helper method to log weights in tensorboard
-    # which is useful for debugging.
-    # def custom_histogram_weights(self):
-    #     for name, params in self.named_parameters():
-    #         self.logger.experiment.add_histogram(
-    #             name, params, self.current_epoch)
 
     def training_step(self, batch, batch_idx):
         x, y, _ = batch
@@ -43,9 +39,6 @@ class Classifier(pl.LightningModule):
         loss = nn.functional.cross_entropy(y_hat, y)
         self.log('train_loss_fc', loss)
         return loss
-
-    # def training_epoch_end(self, outputs):
-    #     self.custom_histogram_weights()
 
     def validation_step(self, batch, batch_idx):
         x, y, _ = batch
@@ -56,9 +49,7 @@ class Classifier(pl.LightningModule):
 
     def configure_optimizers(self):
         optim = torch.optim.SGD(self.fc.parameters(), lr=self.lr)
-        # optim = torch.optim.SGD(
-        #     [{'params': self.resnet.parameters(), 'lr': 0.006},
-        #     {'params': self.fc.parameters(), 'lr': self.lr}],
-        #     momentum=0.9)
-        scheduler = torch.optim.lr_scheduler.MultiStepLR(optim, milestones=[50, 80], gamma=0.1)
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optim, 200)
+
+        # scheduler = torch.optim.lr_scheduler.MultiStepLR(optim, milestones=[50, 80], gamma=0.1)
         return [optim], [scheduler]

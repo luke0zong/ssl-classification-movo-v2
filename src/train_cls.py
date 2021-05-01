@@ -94,7 +94,7 @@ def main():
 
     #### create cls
     print("=> creating classifier model")
-    model = Classifier(moco, lr=args.lr)
+    model = Classifier(moco.resnet_moco, lr=args.lr)
     del moco
 
     #### create augmentation

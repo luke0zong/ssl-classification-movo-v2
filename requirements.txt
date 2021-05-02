@@ -1,2 +1,2 @@
 lightly
-pytorch_lightning=1.18
+pytorch_lightning=1.1.8

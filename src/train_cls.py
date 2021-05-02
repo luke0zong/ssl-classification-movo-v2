@@ -177,10 +177,13 @@ def main_worker(gpu, args):
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                      std=[0.229, 0.224, 0.225])
     transform_train = transforms.Compose([
+            transforms.RandomResizedCrop(96),  # add crop resize
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             normalize])
     transform_eval = transforms.Compose([
+            transforms.Resize(128),  # add resize
+            transforms.CenterCrop(96),  # add crop
             transforms.ToTensor(),
             normalize
             ])
@@ -209,6 +212,7 @@ def main_worker(gpu, args):
             # remember best acc and save checkpoint
             is_best = accuracy > best_acc1
             best_acc1 = max(accuracy, best_acc1)
+            print(f"=> Epoch: {epoch+1}, isBest? : {is_best}")
             save_checkpoint({
                 'epoch': epoch + 1,
                 'arch': args.arch,
@@ -237,7 +241,7 @@ def train(train_loader, model, criterion, optimizer, epoch, args):
     BatchNorm in train mode may revise running mean/std (even if it receives
     no gradient), which are part of the model parameters too.
     """
-    # model.eval()
+    model.eval()
 
     end = time.time()
     for i, (images, target) in enumerate(train_loader):

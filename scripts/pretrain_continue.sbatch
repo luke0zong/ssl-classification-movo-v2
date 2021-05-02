@@ -41,7 +41,7 @@ python pre_train.py --checkpoint-dir $SCRATCH/dl09/pre_checkpoints \
                     --moco-k 2048 \
                     --batch-size 512 \
                     --save-checkpoint-per-epoch 5 \
-                    --resume $SCRATCH/dl09/pre_checkpoints/checkpoint_070.pth \
+                    --resume $SCRATCH/dl09/pre_checkpoints/checkpoint_082.pth \
                     --start-epoch 70 \
                     /dataset
 "

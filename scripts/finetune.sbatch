@@ -37,7 +37,6 @@ python fine_tune.py --checkpoint-dir $SCRATCH/dl09/fine_tune_checkpoints \
                     --epochs 100 \
                     --gpu 0 \
                     --lr 0.03 \
-                    --schedule [60, 80] \
                     --pretrained $SCRATCH/dl09/checkpoints/model_best_098.pth.tar \
                     --eval-per-n-epoch 1 \
                     --batch-size 512 \

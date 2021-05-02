@@ -5,7 +5,7 @@
 import os
 import random
 from PIL import Image
-
+import torchvision.transforms
 import torch
 
 class CustomDataset(torch.utils.data.Dataset):
@@ -25,6 +25,8 @@ class CustomDataset(torch.utils.data.Dataset):
 
         self.num_images = len(os.listdir(self.image_dir))
 
+        self.none_transform = torchvision.transforms.Compose([torchvision.transforms.ToTensor()])
+
         if os.path.exists(label_path):
             self.labels = torch.load(label_path)
         else:
@@ -38,6 +40,6 @@ class CustomDataset(torch.utils.data.Dataset):
             img = Image.open(f).convert('RGB')
         
         if self.transform is None:
-            return img, self.labels[idx]
+            return self.none_transform(img), self.labels[idx]
         else:
             return self.transform(img), self.labels[idx]

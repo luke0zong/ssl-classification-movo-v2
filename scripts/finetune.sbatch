@@ -38,7 +38,7 @@ python fine_tune.py --checkpoint-dir $SCRATCH/dl09/fine_tune_checkpoints \
                     --workers 2 \
                     --gpu 0 \
                     --lr 0.00003 \
-                    --pretrained $SCRATCH/dl09/checkpoints/model_best_098.pth \
+                    --pretrained $SCRATCH/dl09/checkpoints/model_sub_98_15.64.pth \
                     --eval-per-n-epoch 1 \
                     --batch-size 512 \
                     /dataset

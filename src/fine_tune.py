@@ -100,7 +100,7 @@ def main_worker(gpu, args):
             states = torch.load(args.pretrained)
             model.load_state_dict(states['state_dict'])
 
-            args.start_epoch = states.['epoch']
+            args.start_epoch = states['epoch']
 
             print("=> loading freezed checkpoint '{}'".format(args.pretrained))
         else:

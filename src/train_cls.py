@@ -305,7 +305,7 @@ def save_checkpoint(state, is_best, save_dir, epoch, filename='checkpoint.pth.ta
         save_dir, 'model_best_{:03d}.pth'.format(epoch))
     if is_best:
         sub_state = state['state_dict']
-        torch.save(sub_state, os.path.join(save_dir, 'model_sub.pth'))
+        torch.save(sub_state, os.path.join(save_dir, f'model_sub_{epoch}_{best_acc1:.2f}.pth'))
         shutil.copyfile(filename, best_checkpoint)
 
 

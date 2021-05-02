@@ -75,7 +75,7 @@ parser.add_argument('--gpu', default=None, type=int,
 # moco specific configs:
 parser.add_argument('--moco-dim', default=128, type=int,
                     help='feature dimension (default: 128)')
-parser.add_argument('--moco-k', default=65536, type=int,
+parser.add_argument('--moco-k', default=4096, type=int,
                     help='queue size; number of negative keys (default: 65536)')
 parser.add_argument('--moco-m', default=0.999, type=float,
                     help='moco momentum of updating key encoder (default: 0.999)')
@@ -163,6 +163,7 @@ def main_worker(gpu, ngpus_per_node, args):
             optimizer.load_state_dict(checkpoint['optimizer'])
             print("=> loaded checkpoint '{}' (epoch {})"
                   .format(args.resume, checkpoint['epoch']))
+            del checkpoint # release GPU memory
         else:
             print("=> no checkpoint found at '{}'".format(args.resume))
 
@@ -175,7 +176,7 @@ def main_worker(gpu, ngpus_per_node, args):
     if args.aug_plus:
         # MoCo v2's aug: similar to SimCLR https://arxiv.org/abs/2002.05709
         augmentation = [
-            transforms.RandomResizedCrop(96, scale=(0.2, 1.)),
+            transforms.RandomResizedCrop(96, scale=(0.2, 1.)), # Add back RandomResizedCrop
             transforms.RandomApply([
                 transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)  # not strengthened
             ], p=0.8),
@@ -226,7 +227,7 @@ def main_worker(gpu, ngpus_per_node, args):
                 'arch': args.arch,
                 'state_dict': model.state_dict(),
                 'optimizer' : optimizer.state_dict(),
-            }, is_best=False, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:03d}.pth.tar'.format(epoch+1)))
+            }, is_best=False, filename=os.path.join(args.checkpoint_dir, 'checkpoint_{:03d}.pth'.format(epoch+1)))
 
 
 def train(train_loader, model, criterion, optimizer, epoch, args):
@@ -280,7 +281,7 @@ def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
     torch.save(state, filename)
     print(f"=> checkpoints saved to {filename}")
     if is_best:
-        shutil.copyfile(filename, 'model_best.pth.tar')
+        shutil.copyfile(filename, 'model_best.pth')
 
 
 class AverageMeter(object):

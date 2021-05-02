@@ -3,12 +3,12 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=n1s8-t4-1
 #SBATCH --account=dl09
-#SBATCH --time=60:00:00
+#SBATCH --time=24:00:00
 #SBATCH --output=dl09_%j.out
 #SBATCH --error=dl09_%j.err
 #SBATCH --exclusive
 #SBATCH --requeue
-#SBATCH --job-name=dl09_pre_cont
+#SBATCH --job-name=9_pre_cont
 
 /share/apps/local/bin/p2pBandwidthLatencyTest > /dev/null 2>&1
 
@@ -27,17 +27,21 @@ tail -F $HOME/dl09/scripts/dl09_${SLURM_JOB_ID}.out >> $SCRATCH/log/${SLURM_JOB_
 
 singularity exec --nv \
 --bind /scratch \
---overlay /scratch/DL21SP/conda.sqsh:ro \
+--overlay /scratch/DL21SP/conda_fixed.sqsh:ro \
 --overlay /tmp/student_dataset.sqsh:ro \
 /share/apps/images/cuda11.1-cudnn8-devel-ubuntu18.04.sif \
 /bin/bash -c "
 source /ext3/env.sh
 conda activate dev
-python pre_train.py --checkpoint_dir $SCRATCH/dl09/pre_checkpoints \
-                        --epochs 100 \
-                        --gpu 0 \
-                        --resume $SCRATCH/dl09/pre_checkpoints/checkpoint_0005.pth.tar \
-                        --start-epoch 6 \
-                        --mlp --aug-plus --cos \
-                        /dataset
+python pre_train.py --checkpoint-dir $SCRATCH/dl09/pre_checkpoints \
+                    --epochs 100 \
+                    --arch resnet50 \
+                    --gpu 0 \
+                    --mlp --aug-plus --cos \
+                    --moco-k 2048 \
+                    --batch-size 512 \
+                    --save-checkpoint-per-epoch 5 \
+                    --resume $SCRATCH/dl09/pre_checkpoints/checkpoint_070.pth \
+                    --start-epoch 70 \
+                    /dataset
 "

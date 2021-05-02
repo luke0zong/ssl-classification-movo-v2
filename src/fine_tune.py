@@ -188,7 +188,7 @@ def train(train_loader, model, criterion, optimizer, epoch, args):
     BatchNorm in train mode may revise running mean/std (even if it receives
     no gradient), which are part of the model parameters too.
     """
-    model.eval()
+    # model.eval()
 
     end = time.time()
     for i, (images, target) in enumerate(train_loader):

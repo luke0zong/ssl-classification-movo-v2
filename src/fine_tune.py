@@ -94,14 +94,14 @@ def main_worker(gpu, args):
 
 
     # load from pre-trained, before DistributedDataParallel constructor
-    if args.freeze_ckpt:
-        if os.path.isfile(args.freeze_ckpt):
-            print("=> loading freezed checkpoint '{}'".format(args.freeze_ckpt))
-            model.load_state_dict(torch.load(args.freeze_ckpt))
+    if args.pretrained:
+        if os.path.isfile(args.pretrained):
+            print("=> loading freezed checkpoint '{}'".format(args.pretrained))
+            model.load_state_dict(torch.load(args.pretrained))
 
-            print("=> loading freezed checkpoint '{}'".format(args.freeze_ckpt))
+            print("=> loading freezed checkpoint '{}'".format(args.pretrained))
         else:
-            raise ValueError("=> no freezed checkpoint found at '{}'".format(args.freeze_ckpt))
+            raise ValueError("=> no freezed checkpoint found at '{}'".format(args.pretrained))
 
 
     if args.gpu is not None:

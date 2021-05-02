@@ -35,6 +35,7 @@ source /ext3/env.sh
 conda activate dev
 python fine_tune.py --checkpoint-dir $SCRATCH/dl09/fine_tune_checkpoints \
                     --epochs 100 \
+                    --workers 2 \
                     --gpu 0 \
                     --lr 0.03 \
                     --pretrained $SCRATCH/dl09/checkpoints/model_best_098.pth \

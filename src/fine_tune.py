@@ -97,7 +97,10 @@ def main_worker(gpu, args):
     if args.pretrained:
         if os.path.isfile(args.pretrained):
             print("=> loading freezed checkpoint '{}'".format(args.pretrained))
-            model.load_state_dict(torch.load(args.pretrained))
+            states = torch.load(args.pretrained)
+            model.load_state_dict(states['state_dict'])
+
+            args.start_epoch = states.['epoch']
 
             print("=> loading freezed checkpoint '{}'".format(args.pretrained))
         else:

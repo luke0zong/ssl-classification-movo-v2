@@ -117,11 +117,11 @@ def main():
             std=lightly.data.collate.imagenet_normalize['std'])
     ])
 
-    train_dataset = CustomDataset(args.data, 'train', None)
-    eval_dataset = CustomDataset(args.data, 'val', None)
+    train_dataset = CustomDataset(args.data, 'train', train_classifier_transforms)
+    eval_dataset = CustomDataset(args.data, 'val', test_transforms)
 
-    dataset_train_classifier = lightly.data.LightlyDataset.from_torch_dataset(train_dataset, train_classifier_transforms)
-    dataset_eval_classifier = lightly.data.LightlyDataset.from_torch_dataset(eval_dataset, test_transforms)
+    dataset_train_classifier = lightly.data.LightlyDataset.from_torch_dataset(train_dataset)
+    dataset_eval_classifier = lightly.data.LightlyDataset.from_torch_dataset(eval_dataset)
 
     dataloader_train_classifier = torch.utils.data.DataLoader(
         dataset_train_classifier,

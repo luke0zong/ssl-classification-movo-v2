@@ -44,7 +44,7 @@ parser.add_argument('--momentum', default=0.9, type=float, metavar='M',
 parser.add_argument('--wd', '--weight-decay', default=0., type=float,
                     metavar='W', help='weight decay (default: 0.)',
                     dest='weight_decay')
-parser.add_argument('-p', '--print-freq', default=100, type=int,
+parser.add_argument('-p', '--print-freq', default=10, type=int,
                     metavar='N', help='print frequency (default: 10)')
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
@@ -75,8 +75,7 @@ def main():
                       'from checkpoints.')
 
     if args.gpu is not None:
-        warnings.warn('You have chosen a specific GPU. This will completely '
-                      'disable data parallelism.')
+       print(f"=> Using gpu: {args.gpu}")
 
     main_worker(args.gpu, args)
 

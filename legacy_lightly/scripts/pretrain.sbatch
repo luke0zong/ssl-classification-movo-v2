@@ -3,7 +3,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=n1s8-t4-1
 #SBATCH --account=dl09
-#SBATCH --time=23:00:00
+#SBATCH --time=24:00:00
 #SBATCH --output=dl09_%j.out
 #SBATCH --error=dl09_%j.err
 #SBATCH --exclusive
@@ -24,27 +24,24 @@ echo "Dataset is copied to /tmp"
 
 cd $HOME/dl09/src
 
+echo "Output log in $SCRATCH/log/${SLURM_JOB_ID}.log"
+tail -F $HOME/dl09/scripts/dl09_${SLURM_JOB_ID}.out >> $SCRATCH/log/${SLURM_JOB_ID}.log &
+
 singularity exec --nv \
 --bind /scratch \
---overlay $SCRATCH/dl09/env/conda_lightly.ext3:ro \
+--overlay /scratch/DL21SP/conda_fixed.sqsh:ro \
 --overlay /tmp/student_dataset.sqsh:ro \
 /share/apps/images/cuda11.1-cudnn8-devel-ubuntu18.04.sif \
 /bin/bash -c "
 source /ext3/env.sh
 conda activate dev
 python pre_train.py --checkpoint-dir $SCRATCH/dl09/pre_checkpoints \
-                    --save-checkpoint-per-epoch 5 \
                     --epochs 100 \
-                    --batch-size 128 \
-                    --workers 2 \
-                    --gpus 1 \
-                    --lr 0.006 \
-                    --momentum 0.9 \
-                    --weight-decay 5e-4 \
-                    --moco-dim 128 \
-                    --moco-k 4096 \
-                    --moco-m 0.99 \
-                    --moco-t 0.1 \
-                    --num-splits 8 \
+                    --arch resnet50 \
+                    --gpu 0 \
+                    --mlp --aug-plus --cos \
+                    --moco-k 2048 \
+                    --batch-size 512 \
+                    --save-checkpoint-per-epoch 5 \
                     /dataset
 "

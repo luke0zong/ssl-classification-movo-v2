@@ -100,26 +100,28 @@ def main():
     #### create augmentation
     train_classifier_transforms = torchvision.transforms.Compose([
     # torchvision.transforms.RandomCrop(96, padding=4),
-    torchvision.transforms.RandomResizedCrop(96, scale=(0.2, 1)),
-    torchvision.transforms.RandomHorizontalFlip(),
-    torchvision.transforms.ToTensor(),
-    torchvision.transforms.Normalize(
-        mean=lightly.data.collate.imagenet_normalize['mean'],
-        std=lightly.data.collate.imagenet_normalize['std'])])
+        torchvision.transforms.RandomResizedCrop(96, scale=(0.2, 1)),
+        torchvision.transforms.RandomHorizontalFlip(),
+        torchvision.transforms.ToTensor(),
+        torchvision.transforms.Normalize(
+            mean=lightly.data.collate.imagenet_normalize['mean'],
+            std=lightly.data.collate.imagenet_normalize['std'])
+    ])
     # No additional augmentations for the test set
     test_transforms = torchvision.transforms.Compose([
-    torchvision.transforms.Resize(128),
-    torchvision.transforms.CenterCrop(96),
-    torchvision.transforms.ToTensor(),
-    torchvision.transforms.Normalize(
-        mean=lightly.data.collate.imagenet_normalize['mean'],
-        std=lightly.data.collate.imagenet_normalize['std'])])
+        torchvision.transforms.Resize(128),
+        torchvision.transforms.CenterCrop(96),
+        torchvision.transforms.ToTensor(),
+        torchvision.transforms.Normalize(
+            mean=lightly.data.collate.imagenet_normalize['mean'],
+            std=lightly.data.collate.imagenet_normalize['std'])
+    ])
 
     train_dataset = CustomDataset(args.data, 'train', None)
     eval_dataset = CustomDataset(args.data, 'val', None)
 
     dataset_train_classifier = lightly.data.LightlyDataset.from_torch_dataset(train_dataset, train_classifier_transforms)
-    dataset_eval_classifier = lightly.data.LightlyDataset.from_torch_dataset(eval_dataset, eval_dataset)
+    dataset_eval_classifier = lightly.data.LightlyDataset.from_torch_dataset(eval_dataset, test_transforms)
 
     dataloader_train_classifier = torch.utils.data.DataLoader(
         dataset_train_classifier,

@@ -8,7 +8,7 @@
 #SBATCH --error=dl09_%j.err
 #SBATCH --exclusive
 #SBATCH --requeue
-#SBATCH --job-name=dl09_train
+#SBATCH --job-name=dl09_ft
 
 /share/apps/local/bin/p2pBandwidthLatencyTest > /dev/null 2>&1
 
@@ -33,12 +33,12 @@ singularity exec --nv \
 /bin/bash -c "
 source /ext3/env.sh
 conda activate dev
-python train_cls.py --checkpoint-dir $SCRATCH/dl09/checkpoints \
+python fine_tune.py --checkpoint-dir $SCRATCH/dl09/fine_tune_checkpoints \
                     --epochs 100 \
                     --gpu 0 \
-                    --lr 30 \
-                    --schedule [40, 80] \
-                    --pretrained $SCRATCH/dl09/pre_checkpoints/checkpoint_080.pth \
+                    --lr 0.03 \
+                    --schedule [60, 80] \
+                    --pretrained $SCRATCH/dl09/checkpoints/checkpoint_060.pth.tar \
                     --eval-per-n-epoch 1 \
                     --batch-size 512 \
                     /dataset

@@ -35,9 +35,10 @@ source /ext3/env.sh
 conda activate dev
 python train_cls.py --checkpoint-dir $SCRATCH/dl09/checkpoints \
                     --epochs 100 \
+                    --worker 2 \
                     --gpu 0 \
                     --lr 30 \
-                    --pretrained $SCRATCH/dl09/pre_checkpoints/checkpoint_080.pth \
+                    --pretrained $SCRATCH/dl09/pre_checkpoints/checkpoint_082.pth \
                     --eval-per-n-epoch 1 \
                     --batch-size 512 \
                     /dataset

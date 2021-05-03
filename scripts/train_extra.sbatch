@@ -17,8 +17,8 @@ set -x
 mkdir /tmp/$USER
 export SINGULARITY_CACHEDIR=/tmp/$USER
 
-cp -rp /scratch/jg5505/dl09/data_extra.sqsh /tmp
-echo "Dataset is copied to /tmp"
+cp -rp /scratch/jg5505/dl09/dataset /tmp/dataset
+echo "Dataset is copied to /tmp/dataset"
 
 cd $HOME/dl09/src
 
@@ -28,12 +28,11 @@ tail -F $HOME/dl09/scripts/dl09_${SLURM_JOB_ID}.out >> $SCRATCH/log/${SLURM_JOB_
 singularity exec --nv \
 --bind /scratch \
 --overlay /scratch/DL21SP/conda_fixed.sqsh:ro \
---overlay /tmp/student_dataset.sqsh:ro \
 /share/apps/images/cuda11.1-cudnn8-devel-ubuntu18.04.sif \
 /bin/bash -c "
 source /ext3/env.sh
 conda activate dev
-python train_cls.py --checkpoint-dir $SCRATCH/dl09/checkpoints \
+python train_cls.py --checkpoint-dir $SCRATCH/dl09/extra_checkpoints \
                     --epochs 200 \
                     --worker 2 \
                     --gpu 0 \
@@ -41,5 +40,5 @@ python train_cls.py --checkpoint-dir $SCRATCH/dl09/checkpoints \
                     --pretrained $SCRATCH/dl09/pre_checkpoints/checkpoint_100.pth \
                     --eval-per-n-epoch 1 \
                     --batch-size 512 \
-                    /dataset
+                    /tmp/dataset
 "

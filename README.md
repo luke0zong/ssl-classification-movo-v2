@@ -8,7 +8,7 @@ Arthur Jinyue Guo (jg5505)
 
 Yaowei Zong (yz7413)
 
---
+---
 
 ## Code Structure
 
@@ -137,6 +137,6 @@ Sbatch files to submit jobs on Greene HPC
 
    Make sure you have `src/submission.py` correctly defined.
 
-### Result
+## Result
 
 Due to time limiting and lacking one team member ( other teams have 3 or 4 members), we didn't have enough time to run a full pretraining and finetuning, thus the final submission only has a **15.98%** validation accuracy (5.94% with extra labels).

@@ -115,6 +115,7 @@ Sbatch files to submit jobs on Greene HPC
    cp -rp /scratch/jg5505/dl09/dataset /tmp/dataset
    ```
 
+
    Then run
 
    ```bash
@@ -152,6 +153,7 @@ Our initial plan for selecting bad images is:
 
 We ended up selecting 12,800 random indices from the unlabeled dataset.
 
-### Result
+
+## Result
 
 Due to time limiting and lacking one team member ( other teams have 3 or 4 members), we didn't have enough time to run a full pretraining and finetuning, thus the final submission only has a **15.98%** validation accuracy (5.94% with extra labels).

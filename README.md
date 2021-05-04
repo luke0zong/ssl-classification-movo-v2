@@ -115,6 +115,7 @@ Sbatch files to submit jobs on Greene HPC
    cp -rp /scratch/jg5505/dl09/dataset /tmp/dataset
    ```
 
+
    Then run
 
    ```bash
@@ -136,6 +137,22 @@ Sbatch files to submit jobs on Greene HPC
    ```
 
    Make sure you have `src/submission.py` correctly defined.
+
+### Labeling request
+
+At the time of labeling request task, our model was not performing as expected.
+
+Our initial plan for selecting bad images is:
+
+
+- During the pre-training stage, a random sample of size 12,800 images from the unlabeled dataset is selected.
+
+- After pre-training for certain epochs, the indices of such sampler dataset and the losses and accuracy are recorded.
+
+- Repeat the above step 40 times (i.e 512,000/12,800 such random samplers), the images with the worst losses and accuracies are selected for this job.
+
+We ended up selecting 12,800 random indices from the unlabeled dataset.
+
 
 ## Result
 

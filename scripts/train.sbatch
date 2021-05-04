@@ -38,7 +38,7 @@ python train_cls.py --checkpoint-dir $SCRATCH/dl09/checkpoints \
                     --worker 2 \
                     --gpu 0 \
                     --lr 30 \
-                    --pretrained $SCRATCH/dl09/pre_checkpoints/checkpoint_088.pth \
+                    --pretrained $SCRATCH/dl09/pre_checkpoints/checkpoint_100.pth \
                     --eval-per-n-epoch 1 \
                     --batch-size 512 \
                     /dataset

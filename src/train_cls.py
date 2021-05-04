@@ -302,10 +302,10 @@ def evaluate(eval_loader, model, args):
 def save_checkpoint(state, is_best, save_dir, epoch, filename='checkpoint.pth.tar'):
     torch.save(state, filename)
     best_checkpoint = os.path.join(
-        save_dir, 'model_best_{:03d}.pth'.format(epoch))
+        save_dir, 'model_best_{:03d}_{:.2f}.pth'.format(epoch, best_acc1))
     if is_best:
         sub_state = state['state_dict']
-        torch.save(sub_state, os.path.join(save_dir, f'model_sub_{epoch}_{best_acc1:.2f}.pth'))
+        torch.save(sub_state, os.path.join(save_dir, 'model_sub.pth'))
         shutil.copyfile(filename, best_checkpoint)
 
 

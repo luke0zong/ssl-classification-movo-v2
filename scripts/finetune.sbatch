@@ -3,12 +3,12 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=n1s8-t4-1
 #SBATCH --account=dl09
-#SBATCH --time=24:00:00
+#SBATCH --time=4:00:00
 #SBATCH --output=dl09_%j.out
 #SBATCH --error=dl09_%j.err
 #SBATCH --exclusive
 #SBATCH --requeue
-#SBATCH --job-name=9_pre_cont
+#SBATCH --job-name=dl09_ft
 
 /share/apps/local/bin/p2pBandwidthLatencyTest > /dev/null 2>&1
 
@@ -33,15 +33,13 @@ singularity exec --nv \
 /bin/bash -c "
 source /ext3/env.sh
 conda activate dev
-python pre_train.py --checkpoint-dir $SCRATCH/dl09/pre_checkpoints \
+python fine_tune.py --checkpoint-dir $SCRATCH/dl09/fine_tune_checkpoints \
                     --epochs 100 \
-                    --arch resnet50 \
+                    --workers 2 \
                     --gpu 0 \
-                    --mlp --aug-plus --cos \
-                    --moco-k 2048 \
+                    --lr 0.00003 \
+                    --pretrained $SCRATCH/dl09/checkpoints/model_sub.pth \
+                    --eval-per-n-epoch 1 \
                     --batch-size 512 \
-                    --save-checkpoint-per-epoch 1 \
-                    --resume $SCRATCH/dl09/pre_checkpoints/checkpoint_082.pth \
-                    --start-epoch 83 \
                     /dataset
 "

@@ -8,7 +8,9 @@
 #SBATCH --error=dl09_%j.err
 #SBATCH --exclusive
 #SBATCH --requeue
-#SBATCH --job-name=9_pre_cont
+#SBATCH --job-name=dl09_pre
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=%u@nyu.edu
 
 /share/apps/local/bin/p2pBandwidthLatencyTest > /dev/null 2>&1
 
@@ -40,8 +42,6 @@ python pre_train.py --checkpoint-dir $SCRATCH/dl09/pre_checkpoints \
                     --mlp --aug-plus --cos \
                     --moco-k 2048 \
                     --batch-size 512 \
-                    --save-checkpoint-per-epoch 1 \
-                    --resume $SCRATCH/dl09/pre_checkpoints/checkpoint_082.pth \
-                    --start-epoch 83 \
+                    --save-checkpoint-per-epoch 5 \
                     /dataset
 "

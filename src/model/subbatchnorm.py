@@ -1,12 +1,9 @@
-# Feel free to modify this file.
-
+# Author: Arthur Jinyue Guo (jg5505)
 import torch
-from torchvision import models, transforms
+import torch.nn.functional as F
+from torch import Tensor
 from torch import nn
-
-team_id = 9
-team_name = "Bai Ze"
-email_address = "jg5505@nyu.edu"
+from typing import Type, Any, Callable, Union, List, Optional
 
 
 class SubBatchNorm2d(nn.BatchNorm2d):
@@ -19,7 +16,6 @@ class SubBatchNorm2d(nn.BatchNorm2d):
         num_splits:
             Number of splits.
     """
-
     def __init__(self, num_features, num_splits=2, **kw):
         super().__init__(num_features, **kw)
         self.num_splits = num_splits
@@ -57,7 +53,7 @@ class SubBatchNorm2d(nn.BatchNorm2d):
         if self.training or not self.track_running_stats:
             result = nn.functional.batch_norm(
                 input.view(-1, C*self.num_splits, H, W),
-                self.running_mean, self.running_var,
+                self.running_mean, self.running_var, 
                 self.weight.repeat(self.num_splits),
                 self.bias.repeat(self.num_splits),
                 True,
@@ -68,29 +64,12 @@ class SubBatchNorm2d(nn.BatchNorm2d):
             result = nn.functional.batch_norm(
                 input,
                 self.running_mean[:self.num_features],
-                self.running_var[:self.num_features],
+                self.running_var[:self.num_features], 
                 self.weight,
                 self.bias,
                 False,
-                self.momentum,
+                self.momentum, 
                 self.eps
             )
-
+        
         return result
-
-
-def get_model():
-    model = models.resnet50(num_classes=800, norm_layer=SubBatchNorm2d)
-    print(model)
-    return model
-
-
-# Transforms
-normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                 std=[0.229, 0.224, 0.225])
-eval_transform = transforms.Compose([
-    transforms.Resize(128),  # add resize
-    transforms.CenterCrop(96),  # add crop
-    transforms.ToTensor(),
-    normalize
-])

@@ -1,4 +1,11 @@
-# dl09
+# Self-Supervised Learning Image Cllassification with Momentum Contrast
+
+
+
+> This is the final competition for NYU course CSCI-GA 2572 Deep Learning Spring 2021.
+>
+> Instructor: Yann LeCun and Alfredo Canziani.
+
 
 Deep Learning Final Competition Team DL09
 
@@ -7,6 +14,7 @@ Deep Learning Final Competition Team DL09
 Arthur Jinyue Guo (jg5505)
 
 Yaowei Zong (yz7413)
+
 
 ---
 

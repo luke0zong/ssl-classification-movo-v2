@@ -15,6 +15,7 @@ Arthur Jinyue Guo (jg5505)
 
 Yaowei Zong (yz7413)
 
+Read the final report [here](/dl09_report.pdf).
 
 ---
 

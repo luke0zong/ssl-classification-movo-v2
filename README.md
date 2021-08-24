@@ -1,4 +1,4 @@
-# Self-Supervised Learning Image Cllassification with Momentum Contrast
+# Self-Supervised Learning Image Classification with Momentum Contrast
 
 
 
